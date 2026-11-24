@@ -1,0 +1,31 @@
+# Prière Sacrée du Roi Salomon — contexte du projet (à lire d'abord)
+
+Lucas (Brésil, parle portugais avec Claude, ton chaleureux, réponses courtes, sans jargon) vend en France l'app **« Prière Sacrée du Roi Salomon »**. C'est le 2e app de Lucas, distinct du 1er (« Temps d'Abondance » / Prière Sacrée, dépôt `reiswqi/app`) : autre dépôt, autre domaine, autre base de données. **Toute l'interface est en français** ; l'admin est en portugais.
+
+## Origine
+Copie du code de `reiswqi/app` (novembre 2026) : même architecture (SPA un seul fichier, serveur Node + Postgres sur Railway, admin anti-chargeback, comptes avec mot de passe, mot de passe oublié par e-mail, KashPay, Brevo, funnel de relance, remboursement, prière du jour scellée, défi 21 jours, Nombres Puissants, Focus du Jour). Les corrections faites dans un app peuvent souvent être reprises dans l'autre.
+
+## Fichiers
+- `src.html` = source ; `python3 build.py` injecte `prieres.json` (104 prières originales inspirées de Salomon) et écrit `index.html`. Toujours commit src.html + index.html.
+- `content/` = sources des textes (prieres1–4.json → prieres.json, progs.js, defi.js) ; déjà copiés dans src.html (ensuite, modifier src.html directement).
+- `img/` = couvertures générées par `design/cover.html` + `design/render.js` (`NODE_PATH=$(npm root -g) node design/render.js`) : fond pourpre/or, icône dorée (crown, key, seal, temple, heart, hourglass, book, cedar, lamp, sun, user). Pas de photos.
+- `server/` (index.js, mail.js, funnel.js, schema.sql), `admin.html`, `package.json`, `railway.json` : identiques au 1er app sauf textes ; le serveur sert `index.html` sur `/`.
+
+## Contenu (original, écrit par Claude ; versets Louis Segond 1910 **à vérifier**)
+- Programmes `P` (leçons **écrites** `tx` : p = paragraphes, v/r = verset, pr = prière, g = geste sacré ; `lread()` les affiche dans le design de `vProgVt`) : `sagesse` (Prière de Sagesse, 5), `prosp` (7 Secrets de la Prospérité, `gift:1` = débloqué par la Grande Prière), `sceau` (Sceau Sacré de Protection, 4), `temple` (7 Prières du Temple, 1 Rois 8), `cantique` (Cantique de l'Amour Fidèle, 4), `temps` (Un Temps pour Chaque Chose, 4). Vidéos vturb plus tard : `vt:[…]` (le lecteur remplace le texte pour ces leçons). `SOON` = Les Proverbes de l'Abondance (31 jours, Bientôt).
+- `SA` = 5 « Prières royales » (Grande Prière du Roi Salomon + protection, maison, prospérité, guérison) ; route `#grande-priere` (alias `#saint-antoine`).
+- Défi « 21 Jours de Sagesse » (👑 Demander la sagesse / 🏛️ Bâtir sa maison / 🌾 Récolter l'abondance), certificat avec Proverbes 4:18.
+- Assistant : `PERE='Frère Nathan'` (onglet « Frère Nathan », réponses de secours).
+- Thème du mois (Bonus) : vide (`THEME_PAGE`) tant que Lucas n'envoie pas de leçons.
+- `OFFERS`/`LOCKS` : encore les cross-sells Kiwify du 1er app (ange gardien, Prière Secrète, Code du Royaume) → **demander à Lucas** s'il les garde ou les change.
+- Funnel : 15 e-mails réécrits pour les leçons de Salomon.
+
+## Identité visuelle
+Fond #120a1f (pourpre très sombre), cartes #2b1a42, or #dcc084, ciel étoilé violet. Polices Cormorant Garamond + Lato. Stockage local : `rs1`, `rs_q`, `rs_dev` (différents du 1er app).
+
+## À configurer (en attente de Lucas)
+- Dépôt GitHub (Lucas le crée), domaine (Lucas l'achète ; éviter .online, marqué « site dangereux » par Google pour le 1er app → préférer .com/.fr), service Railway + Postgres séparés, `API_URL` (src.html), `ADMIN_URL` (admin.html), `APP_URL`/`SUPPORT_EMAIL` (variables Railway ; défauts `DOMAINE-A-DEFINIR` dans server/mail.js), `ADMIN_PASSWORD` (Lucas), `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`, redirection e-mail contact@, `SUPPORT` dans src.html.
+
+## Règles de travail
+- Garder `<meta charset="utf-8">` et le viewport ; `html,body{margin:0}` ; tester iPhone 13 (Playwright) avant de publier ; vérifier les accents.
+- Contenu toujours original (ne jamais copier d'autres apps). Jamais de token ni de données client dans le dépôt (public).

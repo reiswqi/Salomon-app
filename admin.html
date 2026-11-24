@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a1426">
+<title>Painel Admin · Prière Sacrée du Roi Salomon</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Lato:wght@400;700;900&display=swap">
+<style>
+:root{--bg:#0a1426;--ink:#fff;--soft:rgba(206,219,240,.78);--line:rgba(190,208,238,.18);--panel:rgba(30,51,82,.55);--card:#16294a;--accent:#dcc084;--ok:#74d3a0;--bad:#ff8f84;--display:"Cormorant Garamond",Georgia,serif;--body:"Lato",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--body);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:var(--accent)}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:600;line-height:1.15}
+.wrap{max-width:1120px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-left,0px)) 60px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.top h1{font-size:26px;flex:1;min-width:200px}
+.top h1 small{display:block;font-family:var(--body);font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);font-weight:700;font-size:13px;white-space:nowrap}
+.btn.gold{background:linear-gradient(90deg,#ecd28a,#b98f3c);color:#0a1426;border:0;font-weight:900}
+.btn:hover{border-color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.kpi{padding:14px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.kpi b{display:block;font-size:26px;font-family:var(--display);color:var(--accent)}
+.kpi span{font-size:12px;color:var(--soft)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{padding:9px 14px;border-radius:999px;border:1px solid var(--line);font-weight:700;font-size:13px}
+.tabs button[aria-current="true"]{background:var(--accent);color:#0a1426;border-color:var(--accent)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bar input,.bar select{flex:1;min-width:180px;padding:11px 12px;border-radius:8px;border:1px solid var(--line);background:rgba(8,16,32,.6)}
+.bar select{flex:0 0 auto;min-width:0}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:1.6fr 1fr 1fr .7fr .7fr auto;gap:10px;align-items:center;width:100%;text-align:left;padding:12px 14px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.row:hover{border-color:var(--accent)}
+.row .nm{font-weight:900}.row .em{font-size:12px;color:var(--soft);word-break:break-all}
+.row .k{font-size:11px;color:var(--soft);display:block}
+.head{background:none;border:0;padding:4px 14px;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,120,110,.18);color:var(--bad);border:1px solid rgba(255,120,110,.4)}
+.tag.ok{background:rgba(116,211,160,.14);color:var(--ok);border-color:rgba(116,211,160,.4)}
+.tag.gold{background:rgba(220,192,132,.14);color:var(--accent);border-color:rgba(220,192,132,.4)}
+.panel{padding:16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);margin-bottom:12px}
+.panel h3{font-size:20px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.facts div{padding:10px;border-radius:10px;background:rgba(8,16,32,.45)}
+.facts b{display:block;font-size:16px}.facts span{font-size:11px;color:var(--soft)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.tl .day{margin:16px 0 6px;font-weight:900;color:var(--accent);font-size:13px}
+.ev{display:grid;grid-template-columns:62px 22px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid var(--line)}
+.ev time{color:var(--soft);font-variant-numeric:tabular-nums}
+.ev .d{font-size:12px;color:var(--soft);word-break:break-word}
+.ev.imp .t{color:var(--accent);font-weight:900}
+.ev.bad .t{color:var(--bad);font-weight:900}
+.muted{color:var(--soft)}
+.err{color:var(--bad)}
+.login{max-width:380px;margin:12vh auto 0;display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.login input{padding:12px;border-radius:8px;border:1px solid var(--line);background:rgba(8,16,32,.6)}
+.scroll{overflow-x:auto}
+.print-only{display:none}
+@media (max-width:760px){
+ .row{grid-template-columns:1fr auto;gap:4px 10px}
+ .row .c3,.row .c4,.row .c5,.row>.muted{display:none}
+ .head{display:none}
+ .ev{grid-template-columns:50px 20px 1fr}
+}
+@media print{
+ :root{--ink:#000;--soft:#444;--line:#ccc;--panel:#fff;--accent:#7a5a12;--bad:#a00;--ok:#060}
+ body{background:#fff;color:#000;font-size:11px}
+ .noprint,.top .btn,.tabs,.bar,.kpis{display:none!important}
+ .print-only{display:block}
+ .panel,.facts div{border:1px solid #ccc;background:#fff;break-inside:avoid}
+ .wrap{max-width:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="muted">Carregando…</p></div>
+<script>
+/* Painel Admin : servido pelo servidor Railway em /admin. Lê os dados por /api/admin/* com a senha ADMIN_PASSWORD.
+   Aberto no GitHub Pages, redireciona para o endereço do Railway (ADMIN_URL). */
+const ADMIN_URL='';  // ex. https://app-production-xxxx.up.railway.app/admin
+const API=location.hostname.endsWith('github.io')?null:'';  // no Railway: mesmo endereço
+if(API===null&&ADMIN_URL)location.replace(ADMIN_URL);
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtD=d=>new Date(d).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+const fmtT=d=>new Date(d).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const fmtDT=d=>d?fmtD(d)+' '+fmtT(d):'—';
+const TZ=Intl.DateTimeFormat().resolvedOptions().timeZone;
+const ago=d=>{const s=(Date.now()-new Date(d))/1000;if(s<60)return 'agora';if(s<3600)return Math.round(s/60)+' min atrás';if(s<86400)return Math.round(s/3600)+' h atrás';const n=Math.round(s/86400);return n+(n>1?' dias':' dia')+' atrás'};
+const dur=s=>{s=+s||0;if(s<60)return s+' s';const m=Math.round(s/60);if(m<60)return m+' min';return Math.floor(m/60)+' h '+(m%60)+' min'};
+
+/* ---------- autenticação Supabase (sem biblioteca) ---------- */
+let TOKEN=null;try{TOKEN=sessionStorage.getItem('ta_admin')}catch(e){}
+async function login(password){const r=await fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
+ const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Falha no login');TOKEN=j.token;try{sessionStorage.setItem('ta_admin',TOKEN)}catch(e){}}
+async function api(path){const r=await fetch(API+'/api/admin/'+path,{headers:{Authorization:'Bearer '+TOKEN}});
+ if(r.status===401){logout();throw new Error('Sessão expirada, entre de novo.')}
+ const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('Erro '+r.status));return j}
+function logout(){TOKEN=null;try{sessionStorage.removeItem('ta_admin')}catch(e){}draw()}
+
+/* ---------- nomes legíveis ---------- */
+const TABS={home:'Início',lib:'Programas',pray:'Oração do dia',defi:'Desafio 21 dias',defiday:'Desafio 21 dias (um dia)',deficert:'Certificado 21 dias',shop:'Bônus',guide:'Frère Nathan',refund:'Reembolso',theme:'Tema do mês',prog:'Programa (vídeos)',sa:'Oração de Santo Antônio',offer:'Página de oferta',script:'Script Divino',num:'Números Poderosos',focus:'Foco do Dia',journal:'Diário'};
+const ACTS={open:'Abriu um programa',offer:'Abriu uma oferta',buy:'Clicou em COMPRAR',later:'Clicou em conteúdo “em breve”',soon:'Clicou em conteúdo “em breve”',lesson:'Escolheu uma lição',mark:'Marcou vídeo como concluído',play:'Play / pausa no vídeo do programa',mood:'Escolheu o humor do dia',savej:'Salvou o diário',logout:'Saiu da conta',reset:'Reiniciou a demonstração',ask:'Pergunta pronta ao Père Michel',rask:'Pergunta de ajuda',daygo:'Abriu o caminho do dia',sa:'Abriu a oração de Santo Antônio',sacard:'Abriu uma oração de Santo Antônio',sago:'Avançou na oração',salock:'Tentou abrir oração bloqueada',saread:'Concluiu a leitura da oração',bravoclose:'Fechou o “Bravo”',bravonext:'Continuou após “Bravo”',bravolib:'Foi para Programas após “Bravo”',unlockgo:'Abriu lições desbloqueadas',lockgo:'Clicou em conteúdo bloqueado (venda)',numopen:'Abriu Números Poderosos',ntab:'Trocou aba em Números',numclose:'Fechou Números',numgo:'Calculou seu número',numgift:'Recebeu o presente de Números',focusopen:'Abriu Foco do Dia',fopen:'Abriu escolha de intenção',fclose:'Fechou escolha de intenção',fset:'Definiu a intenção do dia',rnext:'Reembolso: passou para a confirmação',rprev:'Reembolso: voltou uma etapa',rsend:'Reembolso: clicou em CONFIRMAR',epgo:'Abriu uma aula do tema',pep:'Abriu/fechou uma aula de programa',pdopen:'Tocou no cartão da oração do dia',dfstart:'Desafio 21 dias: abriu o Dia 1',dfday:'Desafio 21 dias: abriu um dia',dflock:'Desafio 21 dias: tentou abrir um dia ainda bloqueado',dfok:'Desafio 21 dias: validou o dia',dfsave:'Desafio 21 dias: salvou a anotação',dfcert:'Desafio 21 dias: abriu o certificado',dfagain:'Desafio 21 dias: recomeçou',pdread:'Abriu a oração do dia completa',pdclose:'Fechou a oração do dia (mais tarde)',pdpopgo:'Aceitou o convite da oração do dia',pdpopno:'Adiou o convite da oração do dia',pgo:'Botão Começar/Continuar do programa',pmark:'Marcou aula do programa como concluída',menu:'Abriu o menu da conta'};
+const ICO={reset_request:'📨',reset_done:'🔑',defi:'🌅',pdreveal:'✨',pdpopup:'📜',purchase:'💳',access_denied:'🚫',grant_admin:'🛠️',logout_auto:'🚪',register:'🆕',login_ok:'🔐',login_fail:'⛔',password_set:'🔁',reset_admin:'🛠️',open:'📲',login:'🔑',view:'👁️',act:'👆',video:'🎬',priere:'🙏',lecon:'✅',cadeau:'🎁',chat:'💬',refund:'💸',away:'⏸️',back:'▶️',error:'⚠️'};
+// textes acceptés à la connexion, par version (CONSENT_V dans src.html)
+const CONSENT_TXT={
+ '2026-11-v1':['o registro de atividade',"Texto exibido na tela de login: « En entrant, vous acceptez que votre activité dans l'application (connexions, appareil, adresse IP, contenus consultés) soit enregistrée pour sécuriser votre accès et le suivi de votre compte. »"],
+ '2026-11-v2':["as Condições de uso e a Política de privacidade","Texto exibido na tela de login: « En continuant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité. » (os textos completos também estão na página de vendas e no menu da conta do app) As Conditions d'utilisation (versão de 18/11/2026) dizem, na seção « Sécurité et historique d'utilisation » : « Pour protéger votre compte et confirmer que votre accès fonctionne bien, l'application conserve un historique technique de vos connexions (date, appareil, adresse IP) et des contenus ouverts. En cas de contestation d'un paiement, cet historique peut être transmis à notre prestataire de paiement pour attester de l'accès au service. » Elas também dizem que o acesso é pessoal e que, após o reembolso, o acesso é encerrado."]};
+const money=(c,cur)=>c==null?'—':(c/100).toLocaleString('pt-BR',{style:'currency',currency:cur||'EUR'});
+const PEV={'order.paid':['pago','ok'],'subscription.created':['assinatura','ok'],'subscription.renewed':['renovação','ok'],'manual.grant':['liberado por você','gold'],
+ 'order.refunded':['reembolsado',''],'order.chargeback':['CHARGEBACK',''],'order.created':['iniciou checkout','gold'],'order.awaiting_payment':['aguardando','gold'],
+ 'order.abandoned':['abandonou','gold'],'order.failed':['recusado',''],'subscription.failed':['renovação recusada',''],'subscription.canceled':['assinatura cancelada','']};
+const ptag=ev=>{const x=PEV[ev]||[ev,'gold'];return `<span class="tag ${x[1]}">${esc(x[0])}</span>`};
+const offersTxt=o=>(Array.isArray(o)?o:[]).map(x=>x.name).filter(Boolean).join(' + ')||'—';
+function label(e){const d=e.detail||{};switch(e.type){
+ case 'purchase':return [({'order.paid':'💳 COMPRA APROVADA','manual.grant':'Acesso liberado manualmente por você','order.refunded':'REEMBOLSO PROCESSADO na KashPay','order.chargeback':'CHARGEBACK aberto na Stripe'}[d.event]||('KashPay: '+d.event)),
+   [offersTxt(d.offers),money(d.amount,d.currency),d.payment_id&&'pagamento '+d.payment_id,d.card_holder&&'titular do cartão: '+d.card_holder].filter(Boolean).join(' · ')];
+ case 'access_denied':return ['Acesso NEGADO',({chargeback:'compra em chargeback',refunded:'compra reembolsada',pas_achat:'nenhuma compra com este e-mail'}[d.raison]||d.raison)+' · '+(d.etape||'')];
+ case 'grant_admin':return ['Você liberou o acesso manualmente pelo painel','(IP e aparelho deste registro são os seus)'];
+ case 'defi':return d.ev==='debut'?['🌅 Começou o Desafio de 21 dias','']:['✅ Concluiu o DIA '+d.jour+' do Desafio de 21 dias',d.note?'escreveu '+d.note+' caracteres no diário':''];
+ case 'reset_request':return ['Pediu um link para redefinir a senha (e-mail enviado)',''];
+ case 'reset_done':return ['Redefiniu a senha pelo link do e-mail e entrou',''];
+ case 'pdreveal':return ['✨ Revelou a oração do dia',d.titre||''];
+ case 'pdpopup':return ['Viu o convite da oração do dia',''];
+ case 'legal':return ['Abriu '+(d.doc==='conf'?'a Política de privacidade':'as Condições de uso'),''];
+ case 'logout_auto':return ['Desconectado automaticamente',d.raison==='bloque'?'compra reembolsada ou contestada':'sessão expirada'];
+ case 'open':return ['Abriu o app',[d.pwa?'app instalado':'navegador',d.utm_source&&'origem: '+d.utm_source,d.hash&&'#'+d.hash,d.ref&&'veio de '+d.ref].filter(Boolean).join(' · ')];
+ case 'register':return ['CRIOU A CONTA com senha própria','aceitou o registro de atividade (versão '+(d.consent||'')+')'];
+ case 'login_ok':return ['Entrou com e-mail e SENHA CORRETA',d.temporaire?'senha temporária enviada por você':''];
+ case 'login_fail':return ['Tentativa de login com senha errada',d.compte?'':'e-mail sem conta'];
+ case 'password_set':return ['Definiu uma nova senha pessoal',''];
+ case 'reset_admin':return ['Você gerou uma senha temporária pelo painel','(IP e aparelho deste registro são os seus)'];
+ case 'login':return ['Fez login (aceitou o registro de atividade)','consentimento '+(d.consent||'')+(d.consent_at?' em '+fmtDT(d.consent_at):'')];
+ case 'view':return ['Abriu a tela: '+(TABS[d.tab]||d.tab),[d.prog&&'programa '+d.prog,d.offer&&'oferta '+d.offer,d.priere!=null&&'oração nº '+(+d.priere+1)].filter(Boolean).join(' · ')];
+ case 'act':{if(d.a==='epgo'&&d.i!=null)return ['Abriu a aula '+(+d.i+1)+' do tema',''];if((d.a==='pep'||d.a==='pgo')&&d.i!=null)return ['Abriu a aula '+(+d.i+1)+' do programa',''];if(d.a==='pmark'&&d.i!=null)return ['Marcou a aula '+(+d.i+1)+' do programa como concluída',''];if(d.a==='sacard'&&d.i!=null)return ['Abriu a oração de Santo Antônio nº '+(+d.i+1),''];const x=Object.entries(d).filter(([k])=>k!=='a').map(([k,v])=>k+': '+v).join(' · ');return [ACTS[d.a]||('Ação: '+d.a),x]}
+ case 'video':return [`Aula ${d.lecon} do tema: `+({lecture:'deu play',pause:'pausou',vue:'ASSISTIU (90 %+)'}[d.ev]||d.ev),'aos '+dur(d.t)];
+ case 'priere':return ['Leu a oração '+d.n+(d.titre?' — '+d.titre:''),d.nouvelle?'primeira leitura':'releitura'];
+ case 'lecon':return ['Concluiu a lição '+d.n,'programa '+d.prog];
+ case 'cadeau':return ['Desbloqueou um presente',d.type||''];
+ case 'chat':return ['Mandou mensagem ao Frère Nathan',d.car+' caracteres'];
+ case 'refund':return ['PEDIU REEMBOLSO','motivo: '+(d.motif||'—')+(d.precisions?' · “'+d.precisions+'”':'')+(d.mail?' · e-mail informado: '+d.mail:'')];
+ case 'away':return ['Saiu / minimizou o app','ficou '+dur(d.secs)+' ativo'];
+ case 'back':return ['Voltou ao app',''];
+ case 'error':return ['Erro no app',d.msg||''];
+ default:return [e.type,JSON.stringify(d)]}}
+function uaName(ua){ua=ua||'';const os=/iPhone/.test(ua)?'iPhone':/iPad/.test(ua)?'iPad':/Android/.test(ua)?'Android':/Windows/.test(ua)?'Windows':/Mac OS X/.test(ua)?'Mac':/Linux/.test(ua)?'Linux':'?';
+ const br=/Edg\//.test(ua)?'Edge':/OPR\//.test(ua)?'Opera':/Instagram/.test(ua)?'Instagram':/FBAN|FBAV/.test(ua)?'Facebook':/CriOS|Chrome\//.test(ua)?'Chrome':/FxiOS|Firefox/.test(ua)?'Firefox':/Safari/.test(ua)?'Safari':'?';return os+' · '+br}
+
+/* ---------- estado / telas ---------- */
+const ST={tab:'clients',q:'',f:'all',clients:null,recent:null,refunds:null,sales:null,cfg:null,detail:null,err:''};
+async function load(){ST.err='';try{
+ if(ST.tab==='recent'&&!ST.recent)ST.recent=await api('recent?limit=300');
+ if(ST.tab==='refunds'&&!ST.refunds)ST.refunds=await api('recent?type=refund&limit=1000');
+ if(ST.tab==='sales'&&!ST.sales){ST.sales=await api('sales?limit=1000');ST.cfg=await api('config');ST.mail=await api('mail/status').catch(()=>null);ST.fun=await api('funnel').catch(()=>null);ST.off=await api('offers').catch(()=>null)}
+ if(!ST.clients)ST.clients=await api('clients');
+}catch(e){ST.err=e.message}draw()}
+async function openClient(email){ST.detail={email,loading:true};draw();window.scrollTo(0,0);try{
+ const j=await api('client?email='+encodeURIComponent(email));const ev=j.events,devs=j.devices,acc=j.account;
+ ST.detail={email,ev,devs,acc,pur:j.purchases||[],access:j.access||{}};}catch(e){ST.detail={email,err:e.message}}draw()}
+
+function draw(){const app=$('#app');
+ if(API===null){app.innerHTML=`<div class="login"><h2>Painel no Railway</h2><p class="muted">O painel admin agora fica no servidor do Railway. Abra o endereço do seu serviço « app » no Railway seguido de <b>/admin</b>.</p></div>`;return}
+ if(!TOKEN){app.innerHTML=`<form class="login" id="lf"><small style="font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)">Prière Sacrée du Roi Salomon</small><h2>Painel Admin</h2>
+  <input type="text" name="username" autocomplete="username" value="admin" hidden><input id="lp" type="password" autocomplete="current-password" placeholder="Senha do painel" required autofocus>
+  <button class="btn gold" type="submit">Entrar</button><p class="err" id="lerr">${esc(ST.err)}</p></form>`;return}
+ if(ST.detail)return drawClient();
+ const C=ST.clients||[],now=Date.now(),act=h=>C.filter(c=>now-new Date(c.last_seen)<h*3600e3).length;
+ const rf=C.filter(c=>c.refund).length,avg=C.length?C.reduce((a,c)=>a+(+c.secs||0),0)/C.length:0;
+ let list=C.filter(c=>(!ST.q||(c.email+' '+(c.name||'')).toLowerCase().includes(ST.q.toLowerCase()))&&(ST.f==='all'||(ST.f==='refund'&&c.refund)||(ST.f==='7d'&&now-new Date(c.last_seen)<7*864e5)||(ST.f==='idle'&&now-new Date(c.last_seen)>=7*864e5)));
+ app.innerHTML=`<div class="top"><h1><small>Prière Sacrée du Roi Salomon</small>Painel Admin</h1><button class="btn" data-a="reload">↻ Atualizar</button><button class="btn" data-a="logout">Sair</button></div>
+ <div class="kpis"><div class="kpi"><b>${C.length}</b><span>clientes que entraram</span></div><div class="kpi"><b>${act(24)}</b><span>ativos nas últimas 24 h</span></div>
+  <div class="kpi"><b>${act(168)}</b><span>ativos nos últimos 7 dias</span></div><div class="kpi"><b>${dur(Math.round(avg))}</b><span>tempo médio no app</span></div><div class="kpi"><b style="color:var(--bad)">${rf}</b><span>pediram reembolso</span></div></div>
+ <div class="tabs">${[['clients','Clientes'],['sales','Vendas'],['recent','Atividade recente'],['refunds','Reembolsos']].map(t=>`<button data-a="tab" data-t="${t[0]}" aria-current="${ST.tab===t[0]}">${t[1]}</button>`).join('')}</div>
+ ${ST.err?`<p class="err">${esc(ST.err)}</p>`:''}
+ ${ST.tab==='clients'?`<div class="bar"><input id="q" placeholder="Buscar por nome ou e-mail…" value="${esc(ST.q)}"><select id="f">${[['all','Todos'],['7d','Ativos (7 dias)'],['idle','Sumidos (+7 dias)'],['refund','Pediram reembolso']].map(o=>`<option value="${o[0]}" ${ST.f===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+  <div class="list"><div class="row head"><span>Cliente</span><span>Último acesso</span><span class="c3">Primeiro acesso</span><span class="c4">Sessões</span><span class="c5">Tempo</span><span></span></div>
+  ${!ST.clients?'<p class="muted">Carregando…</p>':list.length?list.map(c=>`<button class="row" data-a="client" data-e="${esc(c.email)}"><span><span class="nm">${esc(c.name||'—')}</span> ${(c.refund?'<span class="tag">reembolso</span>':'')+(c.account_at?' <span class="tag ok">conta ✓</span>':'')+(c.chargeback?' <span class="tag">CHARGEBACK</span>':c.refunded&&!c.paid?' <span class="tag">reembolsado</span>':c.paid?' <span class="tag gold">pago</span>':'')}<span class="em">${esc(c.email)}</span></span>
+   <span>${ago(c.last_seen)}<span class="k">${fmtDT(c.last_seen)}</span></span><span class="c3">${fmtD(c.first_seen)}<span class="k">${esc(c.country||'')}</span></span><span class="c4">${c.sessions}<span class="k">${c.devices} aparelho(s)</span></span><span class="c5">${dur(c.secs)}</span><span class="muted">›</span></button>`).join(''):'<p class="muted">Nenhum cliente encontrado.</p>'}</div>`:''}
+ ${ST.tab==='recent'?feed(ST.recent,true):''}
+ ${ST.tab==='refunds'?feed(ST.refunds,true):''}
+ ${ST.tab==='sales'?salesTab():''}`;
+ const q=$('#q');if(q){q.oninput=()=>{ST.q=q.value;const p=q.selectionStart;draw();const n=$('#q');n.focus();n.setSelectionRange(p,p)}}
+ const f=$('#f');if(f)f.onchange=()=>{ST.f=f.value;draw()}}
+const GOTXT={'':'Entrada do app','message':'Oração do dia (selo)','grande-priere':'Grande Oração do Rei','saint-antoine':'Grande Oração do Rei','defi':'Desafio 21 dias','prog-sagesse-1':'Sabedoria · aula 1','prog-sagesse-3':'Sabedoria · aula 3','prog-prosp-1':'Prosperidade · segredo 1','prog-prosp-2':'Prosperidade · segredo 2','prog-prosp-5':'Prosperidade · segredo 5','prog-sceau-1':'Selo de proteção · 1','prog-sceau-3':'Selo de proteção · 3','prog-temple-1':'Orações do Templo · 1','prog-cantique-1':'Cântico · 1'};
+const OFFN={'offer:ange':'Découvrez votre ange gardien','lock:0':'Prière Secrète - Illimitée (cadeado)','lock:1':'Code du Royaume (cadeado)','later':'Les 10 Promesses (em breve)','upd':'Roi Salomon (2 de dezembro)'};
+function offersPanel(){const o=ST.off;if(!o)return '';const A=o.rows.find(x=>x.k==='offer:ange')||{clicks:0,people:0,d1:0,d7:0};
+ return `<div class="panel"><h3>Cliques nas ofertas</h3>
+  <div class="facts" style="margin:6px 0 12px"><div><b style="color:var(--accent)">${A.clicks}</b><span>cliques em « Découvrir » · Ange Gardien</span></div><div><b>${A.people}</b><span>pessoas diferentes</span></div><div><b>${A.d1}</b><span>últimas 24 h</span></div><div><b>${A.d7}</b><span>últimos 7 dias</span></div></div>
+  <div class="scroll"><table><tr><th>Oferta / cartão</th><th>Cliques</th><th>Pessoas</th><th>24 h</th><th>7 dias</th><th>Último</th></tr>
+  ${o.rows.length?o.rows.map(x=>`<tr><td><b>${esc(OFFN[x.k]||x.k.replace('offer:','Oferta '))}</b></td><td>${x.clicks}</td><td>${x.people}</td><td>${x.d1}</td><td>${x.d7}</td><td>${fmtDT(x.last)}</td></tr>`).join(''):'<tr><td colspan="6" class="muted">Nenhum clique ainda.</td></tr>'}</table></div>
+  ${o.who.filter(x=>x.id==='ange').length?`<p class="muted" style="margin:10px 0 0">Quem clicou no Ange Gardien: ${o.who.filter(x=>x.id==='ange').slice(0,40).map(x=>`<button data-a="client" data-e="${esc(x.email)}" style="color:var(--accent);font-weight:700">${esc(x.name||x.email)}</button>${x.n>1?' ('+x.n+'×)':''}`).join(' · ')}</p>`:''}
+  <p class="muted" style="margin:6px 0 0;font-size:12px">Contagem desde que o registro de atividade foi ligado no app. Compras dessa oferta acontecem na Kiwify e não aparecem aqui.</p></div>`}
+function funnelPanel(){const f=ST.fun;if(!f)return '';
+ return `<div class="panel"><h3>Funil de reengajamento (quem comprou e nunca entrou)</h3>
+  <p>${f.on?'<span class="tag ok">LIGADO</span> enviando automaticamente':'<span class="tag">DESLIGADO</span> nenhum e-mail é enviado'} · 3 e-mails por dia durante 5 dias, às <b>${f.slots.join(' · ')}</b> (horário de Paris) · para sozinho quando a pessoa entra no app.</p>
+  <p style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button class="btn ${f.on?'':'gold'}" data-a="funtoggle" data-on="${f.on?0:1}">${f.on?'⏸️ Desligar o funil':'▶️ Ligar o funil'}</button></p>
+  <div class="facts" style="margin:10px 0"><div><b>${f.leads.length}</b><span>compraram e ainda não entraram</span></div><div><b>${f.leads.filter(x=>x.sent>0).length}</b><span>já estão recebendo o funil</span></div><div><b style="color:var(--ok)">${f.converted}</b><span>entraram depois de receber</span></div><div><b>${f.last?fmtDT(f.last.at):'—'}</b><span>último envio${f.last?' ('+f.last.sent+')':''}</span></div></div>
+  <div class="scroll"><table><tr><th>#</th><th>Quando</th><th>Assunto</th><th>Leva para</th><th>Enviados</th><th></th></tr>
+  ${f.steps.map(x=>`<tr><td>${x.n}</td><td>Dia ${x.day} · ${x.at}</td><td><b>${esc(x.subject)}</b></td><td>${esc(GOTXT[x.go]||x.go)}</td><td>${x.sent}</td><td style="white-space:nowrap"><button class="btn" style="padding:6px 10px" data-a="funprev" data-n="${x.n}">👁️</button> <button class="btn" style="padding:6px 10px" data-a="funtest" data-n="${x.n}">✉️</button></td></tr>`).join('')}</table></div>
+  ${f.leads.length?`<p class="muted" style="margin:10px 0 0">Na fila: ${f.leads.slice(0,30).map(x=>esc(x.name||x.email)+` (${x.sent}/15)`).join(' · ')}${f.leads.length>30?' …':''}</p>`:''}
+  <p id="fres" class="muted" style="margin:8px 0 0"></p><div id="funbox"></div></div>`}
+function mailPanel(){const m=ST.mail;if(!m)return '';const n=Math.min(m.pending,m.remainingToday);
+ return `<div class="panel"><h3>E-mail de acesso aos compradores (Brevo)</h3>
+  ${m.ready?`<p>Remetente: <b>${esc(m.senderName)} &lt;${esc(m.sender)}&gt;</b> · respostas dos clientes vão para o e-mail de suporte, que encaminha para o seu Gmail</p>`:'<p><span class="tag">falta configurar</span> Adicione no Railway (serviço app → Variables): <b>BREVO_API_KEY</b> e <b>BREVO_SENDER</b>.</p>'}
+  <div class="facts" style="margin:10px 0"><div><b>${m.pending}</b><span>compradores esperando o e-mail (liberados, sem conta)</span></div><div><b>${m.sent}</b><span>já receberam</span></div>
+   <div><b>${m.sentToday} / ${m.limit}</b><span>enviados nas últimas 24 h (limite diário)</span></div><div><b style="color:${m.failed?'var(--bad)':'inherit'}">${m.failed}</b><span>falharam</span></div></div>
+  ${m.lastErrors&&m.lastErrors.length?`<p class="err" style="font-size:12px">Últimas falhas: ${m.lastErrors.map(e=>esc(e.email+' — '+e.error)).join(' · ')}</p>`:''}
+  <p style="display:flex;gap:8px;flex-wrap:wrap;margin:0"><button class="btn" data-a="mprev">👁️ Ver o e-mail</button>
+   <button class="btn" data-a="mtest" ${m.ready?'':'disabled'}>✉️ Enviar teste para mim</button>
+   <button class="btn gold" data-a="msend" data-n="${n}" ${m.ready&&n?'':'disabled'}>Enviar para os próximos ${n}</button></p>
+  ${m.pending>m.remainingToday&&m.ready?`<p class="muted" style="margin:8px 0 0">O limite gratuito do Brevo é ${m.limit} por dia: o resto você envia amanhã, com o mesmo botão. Ninguém recebe duas vezes.</p>`:''}
+  <p id="mres" class="muted" style="margin:8px 0 0"></p>
+  <div id="mprevbox"></div></div>`}
+function salesTab(){if(!ST.sales)return '<p class="muted">Carregando…</p>';const c=ST.cfg||{},S2=ST.sales;
+ const paid=S2.filter(x=>x.event==='order.paid'),never=paid.filter(x=>!x.in_app),tot=paid.reduce((a,x)=>a+(x.amount||0),0),cur=(paid[0]||{}).currency;
+ return `<div class="panel"><h3>Integração KashPay</h3>
+  <p>Webhook: ${c.webhookSecret?'<span class="tag ok">chave configurada</span>':'<span class="tag">falta a chave KASHPAY_WEBHOOK_SECRET no Railway</span>'} · último aviso recebido: <b>${c.lastWebhook?fmtDT(c.lastWebhook.at)+' ('+esc(c.lastWebhook.event)+')':'nenhum desde a última publicação'}</b></p>
+  <p>Endereço para colar na KashPay: <b style="user-select:all">${esc(c.webhookUrl||'')}</b></p>
+  <p>Modo de acesso: <b>${c.mode==='buyers'?'só compradores podem criar conta':'aberto (qualquer e-mail cria conta; reembolso e chargeback bloqueiam)'}</b></p></div>
+ <div class="panel"><h3>Liberar acesso manualmente</h3><p class="muted">Cole um ou vários e-mails (um por linha, ou separados por vírgula, ou a coluna inteira de uma planilha). Cada um poderá criar a conta no app com esse e-mail.</p>
+  <textarea id="gl" rows="4" style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:rgba(8,16,32,.6);font:inherit;color:inherit" placeholder="cliente1@exemplo.com&#10;cliente2@exemplo.com"></textarea>
+  <p style="margin:10px 0 0"><button class="btn gold" data-a="grantmany">Liberar acesso</button> <span id="glr" class="muted"></span></p></div>
+ ${offersPanel()}
+ ${funnelPanel()}
+ ${mailPanel()}
+ <div class="kpis"><div class="kpi"><b>${paid.length}</b><span>vendas aprovadas</span></div><div class="kpi"><b>${money(tot,cur)}</b><span>total aprovado</span></div>
+  <div class="kpi"><b style="color:var(--bad)">${never.length}</b><span>compraram e nunca entraram no app</span></div>
+  <div class="kpi"><b style="color:var(--bad)">${S2.filter(x=>x.event==='order.refunded').length} / ${S2.filter(x=>x.event==='order.chargeback').length}</b><span>reembolsos / chargebacks</span></div></div>
+ <div class="list">${S2.length?S2.map(x=>`<button class="row" data-a="client" data-e="${esc(x.email||'')}" style="grid-template-columns:1.6fr 1.4fr .8fr .9fr auto">
+  <span><span class="nm">${esc(x.name||'—')}</span> ${ptag(x.event)}<span class="em">${esc(x.email||'')}</span></span>
+  <span>${esc(offersTxt(x.offers))}<span class="k">${fmtDT(x.paid_at||x.received_at)}</span></span><span>${money(x.amount,x.currency)}<span class="k">${esc((x.tracking||{}).utm_source||'')}</span></span>
+  <span>${x.in_app?'<span class="tag ok">entrou no app</span>':'<span class="tag">nunca entrou</span>'}</span><span class="muted">›</span></button>`).join(''):'<p class="muted">Nenhuma venda recebida ainda. Configure o webhook na KashPay.</p>'}</div>`}
+function feed(evs,who){if(!evs)return '<p class="muted">Carregando…</p>';if(!evs.length)return '<p class="muted">Nada por aqui ainda.</p>';
+ return `<div class="panel tl">${evs.map(e=>{const [t,d]=label(e);return `<div class="ev ${e.type==='refund'?'bad':['login','video','priere'].includes(e.type)?'imp':''}"><time>${fmtD(e.created_at).slice(0,5)}<br>${fmtT(e.created_at).slice(0,5)}</time><span>${ICO[e.type]||'•'}</span>
+  <span><span class="t">${esc(t)}</span>${who&&e.email?` · <button data-a="client" data-e="${esc(e.email)}" style="color:var(--accent);font-weight:700">${esc(e.name||e.email)}</button>`:''}<br><span class="d">${esc(d)}${e.ip?' · IP '+esc(e.ip):''}</span></span></div>`}).join('')}</div>`}
+
+function drawClient(){const D=ST.detail,app=$('#app');
+ const top=`<div class="top noprint"><button class="btn" data-a="back">← Voltar</button><h1 style="font-size:22px">${esc(D.email)}</h1>${D.ev?`<button class="btn" data-a="csv">Exportar CSV</button><button class="btn gold" data-a="print">Imprimir dossiê / PDF</button>`:''}</div>`;
+ if(D.loading){app.innerHTML=top+'<p class="muted">Carregando histórico…</p>';return}
+ if(D.err){app.innerHTML=top+`<p class="err">${esc(D.err)}</p>`;return}
+ const A=D.access||{},purPanel=`<div class="panel"><h3>Compras (KashPay)</h3>
+  <p>Acesso ao app: ${A.blocked?`<span class="tag">BLOQUEADO (${A.reason==='chargeback'?'chargeback':'reembolso'})</span>`:A.paid?'<span class="tag ok">liberado (compra ativa)</span>':'<span class="tag gold">sem compra registrada</span>'}
+  ${!A.paid?` <button class="btn noprint" data-a="grant" data-e="${esc(D.email)}" style="margin-left:6px">🛠️ Liberar acesso manualmente</button>`:''}</p>
+  ${(D.pur||[]).length?`<div class="scroll"><table><tr><th>Data</th><th>Evento</th><th>Oferta</th><th>Valor</th><th>Pagamento</th><th>Origem</th></tr>${D.pur.map(x=>`<tr><td>${fmtDT(x.paid_at||x.event_at||x.received_at)}</td><td>${ptag(x.event)}</td><td>${esc(offersTxt(x.offers))}</td><td>${money(x.amount,x.currency)}</td><td>${esc(x.payment_id||x.kp_id||'')}${x.card_holder?'<br><span class="muted">titular: '+esc(x.card_holder)+'</span>':''}</td><td>${esc(['utm_source','utm_campaign','utm_content'].map(k=>(x.tracking||{})[k]).filter(Boolean).join(' / ')||'—')}</td></tr>`).join('')}</table></div>`:'<p class="muted">Nenhum aviso da KashPay para este e-mail.</p>'}</div>`;
+ if(!D.ev.length){app.innerHTML=top+`<div class="panel"><h3>${esc((D.pur.find(x=>x.name)||{}).name||D.email)}</h3><p class="err">Este cliente ainda não entrou no app.</p></div>`+purPanel;return}
+ const ev=D.ev,mine=ev.filter(e=>e.email===D.email),name=(mine.slice().reverse().find(e=>e.name)||{}).name||'—';
+ const logins=ev.filter(e=>e.type==='login'),first=ev[0],last=ev[ev.length-1],ref=ev.filter(e=>e.type==='refund');
+ const secs=ev.filter(e=>e.type==='away').reduce((a,e)=>a+Math.min(+(e.detail||{}).secs||0,21600),0);
+ const sessions=new Set(ev.map(e=>e.session)).size,days=new Set(ev.map(e=>fmtD(e.created_at))).size;
+ const vids=[...new Set(ev.filter(e=>e.type==='video'&&e.detail.ev==='vue').map(e=>e.detail.lecon))].sort();
+ const plays=new Set(ev.filter(e=>e.type==='video').map(e=>e.detail.lecon)).size;
+ const prays=[...new Set(ev.filter(e=>e.type==='priere').map(e=>e.detail.n))].sort();
+ const progs=[...new Set(ev.filter(e=>e.type==='view'&&e.detail.prog).map(e=>e.detail.prog))];
+ const lessons=ev.filter(e=>e.type==='lecon').length,chats=ev.filter(e=>e.type==='chat').length;
+ const screens=[...new Set(ev.filter(e=>e.type==='view').map(e=>TABS[e.detail.tab]||e.detail.tab))];
+ const consent=logins[0];
+ // aparelhos e IPs
+ const byDev={};ev.forEach(e=>{const k=e.device||'?';const x=byDev[k]=byDev[k]||{ua:e.ua,first:e.created_at,last:e.created_at,ips:new Set(),cc:new Set(),n:0,tz:e.tz,lang:e.lang,screen:e.screen};x.last=e.created_at;x.n++;if(e.ip)x.ips.add(e.ip);if(e.country)x.cc.add(e.country)});
+ const ips={};ev.forEach(e=>{if(!e.ip)return;const x=ips[e.ip]=ips[e.ip]||{first:e.created_at,last:e.created_at,n:0,cc:e.country};x.last=e.created_at;x.n++});
+ // linha do tempo por dia
+ const tlev=ev.concat((D.pur||[]).map(x=>({created_at:x.paid_at||x.event_at||x.received_at,type:'purchase',detail:x}))).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+ let day='',tl='';tlev.forEach(e=>{const d=fmtD(e.created_at);if(d!==day){day=d;tl+=`<div class="day">${new Date(e.created_at).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</div>`}
+  const [t,x]=label(e);tl+=`<div class="ev ${e.type==='refund'||e.type==='access_denied'||(e.type==='purchase'&&/refund|chargeback/.test(e.detail.event))?'bad':e.type==='purchase'?'imp':['login','video','priere','lecon'].includes(e.type)?'imp':''}"><time>${fmtT(e.created_at)}</time><span>${ICO[e.type]||'•'}</span><span><span class="t">${esc(t)}</span><br><span class="d">${esc(x)}${x?' · ':''}${e.type==='purchase'?'aviso assinado da KashPay':(e.ip?'IP '+esc(e.ip):'')+(e.country?' ('+esc(e.country)+')':'')+' · '+esc(uaName(e.ua))+(e.email?'':' · antes do login')}</span></span></div>`});
+ app.innerHTML=top+`
+ <div class="print-only"><h1>Dossiê de atividade do cliente</h1><p>Prière Sacrée du Roi Salomon · gerado em ${fmtDT(new Date())} (fuso ${esc(TZ)}) · horários registrados pelo servidor</p></div>
+ <div class="panel"><h3>${esc(name)} ${(D.pur||[]).some(x=>x.event==='order.chargeback')?'<span class="tag">CHARGEBACK</span>':(D.pur||[]).some(x=>x.event==='order.refunded')?'<span class="tag">reembolsado na KashPay</span>':ref.length?'<span class="tag">pediu reembolso pelo app</span>':'<span class="tag ok">sem reembolso</span>'}</h3>
+  <div class="facts"><div><b>${fmtDT(first.created_at)}</b><span>primeiro acesso</span></div><div><b>${fmtDT(last.created_at)}</b><span>último acesso (${ago(last.created_at)})</span></div>
+  <div><b>${logins.length}</b><span>logins</span></div><div><b>${sessions}</b><span>sessões (visitas)</span></div><div><b>${days}</b><span>dias diferentes com acesso</span></div>
+  <div><b>${dur(secs)}</b><span>tempo ativo no app</span></div><div><b>${Object.keys(byDev).length}</b><span>aparelho(s)</span></div><div><b>${Object.keys(ips).length}</b><span>endereço(s) IP</span></div></div></div>
+ ${purPanel}
+ <div class="grid2">
+  <div class="panel"><h3>Conta com senha</h3>${D.acc?`<p>Conta criada pelo próprio cliente em <b>${fmtDT(D.acc.created_at)}</b>, a partir do IP <b>${esc(D.acc.created_ip||'—')}</b>${D.acc.created_country?' ('+esc(D.acc.created_country)+')':''}, aparelho ${esc(uaName(D.acc.created_ua))}.</p>
+   <p>Último login com senha: <b>${fmtDT(D.acc.last_login_at)}</b> · senha ${D.acc.pass_by==='admin'?'<b>temporária</b> (gerada por você)':'escolhida pelo cliente'} · ${ev.filter(e=>e.verified).length} de ${ev.length} registros feitos com a conta conectada.</p>
+   <p class="muted">Logins com senha correta: ${ev.filter(e=>e.type==='login_ok'||e.type==='register').length} · tentativas com senha errada: ${ev.filter(e=>e.type==='login_fail').length}</p>
+   <button class="btn noprint" data-a="reset" data-e="${esc(D.email)}">🛠️ Gerar senha temporária</button>${D.temp?`<p class="noprint" style="margin-top:10px">Senha temporária: <b style="font-size:18px;letter-spacing:.06em;user-select:all">${esc(D.temp)}</b><br><span class="muted">Envie ao cliente. No próximo login ele vai escolher uma senha nova.</span></p>`:''}`
+   :'<p class="muted">Este cliente ainda não criou conta com senha (entrou antes desse recurso existir).</p>'}</div>
+  <div class="panel"><h3>Consentimento</h3>${consent?(()=>{const vs=[...new Map(logins.map(e=>[e.detail.consent||'?',e])).values()];
+   return vs.map(c=>`<p>Aceitou ${CONSENT_TXT[c.detail.consent]?CONSENT_TXT[c.detail.consent][0]:'os termos'} ao fazer login em <b>${fmtDT(c.created_at)}</b> (versão ${esc(c.detail.consent||'')}), a partir do IP <b>${esc(c.ip||'—')}</b>${c.country?' ('+esc(c.country)+')':''}, aparelho ${esc(uaName(c.ua))}.</p>
+    <p class="muted">${CONSENT_TXT[c.detail.consent]?CONSENT_TXT[c.detail.consent][1]:''}</p>`).join('')
+    +(ev.some(e=>e.type==='legal')?`<p class="muted">Abriu e leu os documentos legais ${ev.filter(e=>e.type==='legal').length} vez(es).</p>`:'')})():'<p class="muted">Nenhum login registrado.</p>'}</div>
+  <div class="panel"><h3>Uso do conteúdo</h3><div class="facts">
+   <div><b>${vids.length?vids.join(', '):'—'}</b><span>aulas do tema assistidas (90 %+)</span></div><div><b>${plays}</b><span>aulas do tema iniciadas</span></div>
+   <div><b>${prays.length?prays.join(', '):'—'}</b><span>orações de Santo Antônio lidas</span></div><div><b>${progs.length}</b><span>programas abertos</span></div>
+   <div><b>${lessons}</b><span>lições concluídas</span></div><div><b>${chats}</b><span>mensagens ao Frère Nathan</span></div></div>
+   <p class="muted" style="margin:10px 0 0">Telas visitadas: ${esc(screens.join(', ')||'—')}</p></div>
+ </div>
+ ${ref.length?`<div class="panel"><h3 style="color:var(--bad)">Pedido de reembolso</h3>${ref.map(e=>`<p><b>${fmtDT(e.created_at)}</b> · motivo: <b>${esc(e.detail.motif)}</b>${e.detail.precisions?` · “${esc(e.detail.precisions)}”`:''} · e-mail informado: ${esc(e.detail.mail||'')} · IP ${esc(e.ip||'—')}</p>`).join('')}</div>`:''}
+ <div class="panel"><h3>Aparelhos</h3><div class="scroll"><table><tr><th>Aparelho</th><th>Primeiro uso</th><th>Último uso</th><th>Registros</th><th>IPs / país</th><th>Idioma · fuso · tela</th></tr>
+  ${Object.entries(byDev).map(([k,x])=>`<tr><td><b>${esc(uaName(x.ua))}</b><br><span class="muted">${esc(k)}</span></td><td>${fmtDT(x.first)}</td><td>${fmtDT(x.last)}</td><td>${x.n}</td><td>${esc([...x.ips].join(', ')||'—')}<br>${esc([...x.cc].join(', '))}</td><td>${esc(x.lang||'')} · ${esc(x.tz||'')} · ${esc(x.screen||'')}</td></tr>`).join('')}</table></div></div>
+ <div class="panel"><h3>Endereços IP</h3><div class="scroll"><table><tr><th>IP</th><th>País</th><th>Primeiro</th><th>Último</th><th>Registros</th></tr>
+  ${Object.entries(ips).map(([k,x])=>`<tr><td>${esc(k)}</td><td>${esc(x.cc||'—')}</td><td>${fmtDT(x.first)}</td><td>${fmtDT(x.last)}</td><td>${x.n}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">—</td></tr>'}</table></div></div>
+ <div class="panel tl"><h3>Linha do tempo completa (${tlev.length} registros)</h3><p class="muted" style="margin:0">Horários do servidor, mostrados no fuso ${esc(TZ)}.</p>${tl}</div>`}
+
+function csv(){const D=ST.detail,cols=['created_at','client_ts','type','acao','detalhes','email','name','ip','country','device','session','ua','lang','tz','screen'];
+ const rows=D.ev.map(e=>{const [t,x]=label(e);return {...e,acao:t,detalhes:x}});
+ const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ const blob=new Blob(['﻿'+cols.join(';')+'\n'+rows.map(r=>cols.map(c=>q(r[c])).join(';')).join('\n')],{type:'text/csv;charset=utf-8'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dossie-'+D.email.replace(/[^a-z0-9]+/gi,'-')+'.csv';a.click()}
+
+document.addEventListener('submit',async e=>{if(e.target.id!=='lf')return;e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;b.textContent='Entrando…';
+ try{await login($('#lp').value);ST.err='';load()}catch(x){ST.err=x.message;draw()}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+ if(a==='logout')logout();
+ else if(a==='reload'){ST.clients=ST.recent=ST.refunds=null;draw();load()}
+ else if(a==='tab'){ST.tab=b.dataset.t;draw();load()}
+ else if(a==='client')openClient(b.dataset.e);
+ else if(a==='back'){ST.detail=null;draw()}
+ else if(a==='print')window.print();
+ else if(a==='csv')csv()
+ else if(a==='grantmany'){const v=$('#gl').value,n=(v.match(/@/g)||[]).length;if(!n)return alert('Cole pelo menos um e-mail.');if(!confirm('Liberar o acesso de '+n+' e-mail(s)?'))return;
+  b.disabled=true;b.textContent='Liberando…';
+  fetch(API+'/api/admin/grant',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({emails:v})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{b.disabled=false;b.textContent='Liberar acesso';if(!ok)return alert(j.error||'Erro');
+    $('#gl').value='';$('#glr').textContent=`✓ ${j.added} liberado(s)`+(j.already?` · ${j.already} já tinham acesso`:'');ST.clients=null;const keep=$('#glr').textContent;ST.sales=null;load().then(()=>{const e=$('#glr');if(e)e.textContent=keep})})}
+ else if(a==='funtoggle'){const on=b.dataset.on==='1';if(on&&!confirm('Ligar o funil? Os compradores que nunca entraram vão começar a receber os e-mails no próximo horário (08:15, 12:30 ou 19:45 de Paris).'))return;
+  fetch(API+'/api/admin/funnel/toggle',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({on})}).then(()=>api('funnel')).then(j=>{ST.fun=j;draw()})}
+ else if(a==='funprev'){api('funnel/preview?n='+b.dataset.n).then(j=>{const box=$('#funbox');box.innerHTML=`<p style="margin:12px 0 6px"><b>E-mail ${b.dataset.n} · Assunto:</b> ${esc(j.subject)} <span class="muted">(exemplo com cliente fictícia)</span></p><iframe style="width:100%;height:860px;border:1px solid var(--line);border-radius:10px;background:#fff"></iframe>`;box.querySelector('iframe').srcdoc=j.html;box.scrollIntoView({behavior:'smooth'})})}
+ else if(a==='funtest'){const to=prompt('Enviar o e-mail '+b.dataset.n+' de teste para qual endereço?','lr.bussine@gmail.com');if(!to)return;
+  fetch(API+'/api/admin/funnel/test',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({email:to,n:+b.dataset.n})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{$('#fres').textContent=ok?'✓ E-mail '+b.dataset.n+' enviado para '+to:'✗ '+(j.error||'Erro')})}
+ else if(a==='mprev'){api('mail/preview').then(j=>{const box=$('#mprevbox');box.innerHTML=`<p style="margin:12px 0 6px"><b>Assunto:</b> ${esc(j.subject)} <span class="muted">(exemplo com uma cliente fictícia)</span></p><iframe style="width:100%;height:900px;border:1px solid var(--line);border-radius:10px;background:#fff"></iframe>`;box.querySelector('iframe').srcdoc=j.html})}
+ else if(a==='mtest'){const to=prompt('Enviar o e-mail de teste para qual endereço?','lr.bussine@gmail.com');if(!to)return;b.disabled=true;
+  fetch(API+'/api/admin/mail/test',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({email:to})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{b.disabled=false;$('#mres').textContent=ok?'✓ Teste enviado para '+to+'. Confira a caixa de entrada (e o spam).':'✗ '+(j.error||'Erro')})}
+ else if(a==='msend'){const n=+b.dataset.n;if(!confirm('Enviar o e-mail de acesso para '+n+' comprador(es) agora?'))return;b.disabled=true;b.textContent='Enviando… (não feche esta página)';
+  fetch(API+'/api/admin/mail/send',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({max:n})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(async({ok,j})=>{if(!ok){b.disabled=false;b.textContent='Tentar de novo';return $('#mres').textContent='✗ '+(j.error||'Erro')}
+    ST.mail=await api('mail/status').catch(()=>ST.mail);draw();const e=$('#mres');if(e)e.textContent=`✓ ${j.sent} enviado(s)`+(j.failed?` · ✗ ${j.failed} falharam: ${j.errors.join(' · ')}`:'')+` · faltam ${j.left}`})}
+ else if(a==='grant'){if(!confirm('Liberar o acesso de '+b.dataset.e+' manualmente (como se tivesse comprado)?'))return;
+  fetch(API+'/api/admin/grant',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({email:b.dataset.e})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{if(!ok)return alert(j.error||'Erro');ST.sales=null;ST.clients=null;openClient(b.dataset.e)})}
+ else if(a==='reset'){if(!confirm('Gerar uma senha temporária para '+b.dataset.e+'? A senha atual dele deixa de funcionar.'))return;
+  fetch(API+'/api/admin/reset',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({email:b.dataset.e})})
+   .then(r=>r.json().then(j=>({ok:r.ok,j}))).then(({ok,j})=>{if(!ok)return alert(j.error||'Erro');openClient(b.dataset.e).then(()=>{ST.detail.temp=j.password;draw()})})}});
+draw();if(TOKEN&&API!==null)load();
+</script>
+</body>
+</html>

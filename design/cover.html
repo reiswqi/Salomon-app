@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Lato:wght@700;900&display=swap">
+<style>
+/* Générateur de couvertures « Roi Salomon » : ?icon=crown&h1=270&h2=300&w=600&h=900&eb=…&t=…  (rendu Playwright) */
+html,body{margin:0}
+body{width:var(--w);height:var(--h);overflow:hidden;font-family:"Cormorant Garamond",Georgia,serif}
+.c{position:relative;width:100%;height:100%;overflow:hidden;
+ background:radial-gradient(70% 50% at 50% 42%,hsla(var(--h1),60%,38%,.95),transparent 72%),
+  radial-gradient(90% 60% at 100% 100%,hsla(var(--h2),55%,22%,1),transparent 70%),
+  linear-gradient(170deg,hsl(var(--h2),48%,14%),hsl(var(--h1),45%,8%))}
+.stars{position:absolute;inset:0}
+.rays{position:absolute;left:50%;top:42%;width:240%;aspect-ratio:1;transform:translate(-50%,-50%);
+ background:repeating-conic-gradient(from 0deg,rgba(255,222,150,.07) 0 4deg,transparent 4deg 12deg);
+ -webkit-mask:radial-gradient(circle,#000 0,transparent 45%);mask:radial-gradient(circle,#000 0,transparent 45%)}
+.frame{position:absolute;inset:calc(var(--s)*22px);border:calc(var(--s)*1.6px) solid rgba(232,196,120,.75);border-radius:calc(var(--s)*8px)}
+.frame::after{content:"";position:absolute;inset:calc(var(--s)*7px);border:calc(var(--s)*1px) solid rgba(232,196,120,.4);border-radius:calc(var(--s)*5px)}
+.halo{position:absolute;left:50%;top:42%;width:calc(var(--s)*330px);height:calc(var(--s)*330px);transform:translate(-50%,-50%);border-radius:50%;
+ background:radial-gradient(circle,rgba(255,226,160,.42),rgba(255,210,120,.1) 45%,transparent 70%)}
+.ic{position:absolute;left:50%;top:42%;width:calc(var(--s)*220px);height:calc(var(--s)*220px);transform:translate(-50%,-50%);filter:drop-shadow(0 0 calc(var(--s)*14px) rgba(255,215,130,.7))}
+.ic svg{width:100%;height:100%;fill:none;stroke:url(#g);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round}
+.txt{position:absolute;left:0;right:0;bottom:calc(var(--s)*70px);text-align:center;color:#f3dc98;padding:0 calc(var(--s)*50px)}
+.eb{font:900 calc(var(--s)*15px) Lato,sans-serif;letter-spacing:.32em;color:rgba(243,220,152,.85)}
+.t{margin-top:calc(var(--s)*12px);font-weight:600;font-size:calc(var(--s)*44px);line-height:1.08;color:#fbecc0;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.orn{display:block;margin:calc(var(--s)*14px) auto 0;width:calc(var(--s)*160px);height:2px;background:linear-gradient(90deg,transparent,#e8c478,transparent)}
+.wide .ic{top:46%;width:calc(var(--s)*190px);height:calc(var(--s)*190px)}.wide .halo{top:46%}.wide .rays{top:46%}
+.wide .txt{display:none}
+.sq .ic{top:50%;width:calc(var(--s)*300px);height:calc(var(--s)*300px)}.sq .halo,.sq .rays{top:50%}.sq .txt{display:none}
+</style></head><body>
+<div class="c" id="c"><canvas class="stars" id="st"></canvas><div class="rays"></div><div class="halo"></div><div class="frame"></div><div class="ic" id="ic"></div>
+<div class="txt"><div class="eb" id="eb"></div><div class="t" id="t"></div><span class="orn"></span></div></div>
+<script>
+const q=new URLSearchParams(location.search),W=+q.get('w')||600,H=+q.get('h')||900;
+document.body.style.setProperty('--w',W+'px');document.body.style.setProperty('--h',H+'px');
+document.body.style.setProperty('--s',Math.min(W/600,H/900).toFixed(3));
+document.body.style.setProperty('--h1',q.get('h1')||'275');document.body.style.setProperty('--h2',q.get('h2')||'285');
+if(W>H)document.getElementById('c').classList.add('wide');if(W===H)document.getElementById('c').classList.add('sq');
+document.getElementById('eb').textContent=q.has('eb')?q.get('eb'):'ROI SALOMON';document.getElementById('t').textContent=q.get('t')||'';
+const G='<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c2"/><stop offset=".55" stop-color="#e6bf6a"/><stop offset="1" stop-color="#b98a35"/></linearGradient></defs>';
+const I={
+ crown:'<path d="M4 17.5h16M5 17.5l-1.5-9 5 4 3.5-7 3.5 7 5-4-1.5 9"/><circle cx="3.5" cy="8.2" r=".9"/><circle cx="20.5" cy="8.2" r=".9"/><circle cx="12" cy="5" r=".9"/><path d="M5 20h14"/><circle cx="12" cy="14.5" r="1.1"/>',
+ temple:'<path d="M3 9.5L12 4l9 5.5M4 9.5h16M5.5 11v7M9 11v7M15 11v7M18.5 11v7M3.5 18.5h17M2.5 20.5h19"/><circle cx="12" cy="7.3" r=".7"/>',
+ ring:'<circle cx="12" cy="14" r="6.2"/><circle cx="12" cy="14" r="4.2"/><path d="M9.3 7.6L10.5 4h3l1.2 3.6M10.5 4L12 2.6 13.5 4"/><path d="M12 11.6l.7 1.6 1.7.2-1.3 1.1.4 1.7-1.5-.9-1.5.9.4-1.7-1.3-1.1 1.7-.2z"/>',
+ scroll:'<path d="M7 4h11a2 2 0 0 1 2 2v1h-3M7 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7M7 4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2"/><path d="M11 9h5M11 12h5M11 15h3.5"/>',
+ heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 7.4v-4M10.4 4.8h3.2"/>',
+ hourglass:'<path d="M6.5 3.5h11M6.5 20.5h11M8 3.5c0 5 8 4.5 8 8.5s-8 3.5-8 8.5M16 3.5c0 5-8 4.5-8 8.5s8 3.5 8 8.5"/><path d="M10 18.5h4"/>',
+ lamp:'<path d="M4 14c3 0 5-1 8-1s6 2 8 0c-1 3-4 4-8 4s-6-1.5-8-3z"/><path d="M12 13c-1.5-2-1-4 0-6 1 2 1.5 4 0 6z"/><path d="M9 17l-1 3h8l-1-3"/>',
+ dove:'<path d="M3 13c3 0 5-1 7-4 1-1.5 3-2.5 5-2l2-2 1 2.5c1 .5 2 1.5 2 3-2 0-3 .5-4 2-2 3-6 4.5-9 4l-2 2 .5-3C4 15 3.3 14 3 13z"/><path d="M10 9c-1-2-3-3-5-3 0 2 1 4 3 5"/>',
+ cedar:'<path d="M12 3l-4 5h2.5L7 12.5h3L6 17.5h12l-4-5h3L13.5 8H16z"/><path d="M12 17.5V21M9.5 21h5"/>',
+ key:'<circle cx="8" cy="8" r="4"/><circle cx="8" cy="8" r="1.4"/><path d="M11 11l8.5 8.5M16 16l2-2M18 18l2-2"/>',
+ book:'<path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6v13"/><path d="M12 2.5v2M10.8 3.4h2.4"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/>',
+ hands:'<path d="M12 21v-8.5M12 12.5C10 10 8 8 8.5 4.5c.2-1 1.5-1.2 1.8-.2L12 9.5M12 12.5c2-2.5 4-4.5 3.5-8-.2-1-1.5-1.2-1.8-.2L12 9.5"/><path d="M8.5 4.5c-2 3-3 6-2 9 .8 2.4 3 4 5.5 4.5M15.5 4.5c2 3 3 6 2 9-.8 2.4-3 4-5.5 4.5"/>',
+ seal:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5.6"/><path d="M12 8.2l1.1 2.4 2.6.3-1.9 1.8.5 2.6-2.3-1.3-2.3 1.3.5-2.6-1.9-1.8 2.6-.3z"/>',
+ user:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.3-3.8 4-5.6 7-5.6s5.7 1.8 7 5.6"/><path d="M8 5.2L9 3l1.5 1.5L12 2.5l1.5 2L15 3l1 2.2"/>'
+};
+document.getElementById('ic').innerHTML='<svg viewBox="0 0 24 24">'+G+(I[q.get('icon')||'crown'])+'</svg>';
+const cv=document.getElementById('st'),x=cv.getContext('2d');cv.width=W;cv.height=H;let r=+(q.get('seed')||7);const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+for(let i=0;i<W*H/2600;i++){const a=rnd()*.8+.1;x.fillStyle=`rgba(255,${230+rnd()*25|0},${190+rnd()*60|0},${a*.7})`;x.beginPath();x.arc(rnd()*W,rnd()*H,rnd()*1.3+.2,0,7);x.fill()}
+document.title='ready';
+</script></body></html>

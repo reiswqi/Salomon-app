@@ -1,0 +1,128 @@
+// E-mails aux clients via Brevo (https://developers.brevo.com/reference/sendtransacemail).
+// Variables Railway : BREVO_API_KEY (clé API Brevo), BREVO_SENDER (adresse d'envoi validée dans Brevo),
+//                     BREVO_SENDER_NAME (défaut « Prière Sacrée du Roi Salomon »), EMAIL_DAILY_LIMIT (défaut 290 : plan gratuit = 300/jour).
+const BREVO_URL = process.env.BREVO_URL || 'https://api.brevo.com/v3/smtp/email';
+const APP_URL = process.env.APP_URL || 'https://DOMAINE-A-DEFINIR';
+// APP_URL peut être un domaine (https://x.fr) ou une page (https://reiswqi.github.io/app/temps-abondance.html)
+const appLink = q => APP_URL.replace(/\/$/, '') + (/\.html?$/.test(APP_URL) ? '' : '/') + q;
+const SUPPORT = process.env.SUPPORT_EMAIL || 'contact@DOMAINE-A-DEFINIR';   // « Répondre » des clients (redirigé vers le Gmail de Lucas)
+const cfg = () => ({ key: process.env.BREVO_API_KEY || '', sender: process.env.BREVO_SENDER || '', senderName: process.env.BREVO_SENDER_NAME || 'Prière Sacrée du Roi Salomon',
+  limit: Math.max(1, +process.env.EMAIL_DAILY_LIMIT || 290) });
+
+const h = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function firstName(name) {
+  const f = String(name || '').trim().split(/\s+/)[0] || '';
+  if (!/^[\p{L}'-]{2,30}$/u.test(f)) return '';
+  return f.charAt(0).toUpperCase() + f.slice(1).toLowerCase();
+}
+// E-mail d'annonce du nouvel accès : gros caractères, fond clair, un seul bouton (public 50 ans et +)
+function accessEmail(email, name) {
+  const p = firstName(name), link = appLink('?e=' + encodeURIComponent(email));
+  const subject = p ? `${p}, votre accès à Prière Sacrée du Roi Salomon est prêt` : 'Votre accès à Prière Sacrée du Roi Salomon est prêt';
+  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${h(subject)}</title></head>
+<body style="margin:0;padding:0;background:#f4efe4;font-family:Georgia,'Times New Roman',serif;color:#1c2540">
+<div style="display:none;max-height:0;overflow:hidden">Votre e-mail est déjà prêt : un seul bouton à toucher.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe4"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;border:1px solid #e3d6b8">
+<tr><td style="padding:30px 26px 6px;text-align:center">
+ <div style="font-size:15px;letter-spacing:3px;color:#8a6a1e;font-family:Arial,sans-serif;font-weight:bold">✦ PRIÈRE SACRÉE ✦</div>
+ <h1 style="margin:16px 0 0;font-size:30px;line-height:1.25;font-weight:normal;color:#1c2540">${p ? 'Bonjour ' + h(p) + ',' : 'Bonjour,'}</h1>
+</td></tr>
+<tr><td style="padding:12px 26px 0;font-size:20px;line-height:1.6;text-align:center">
+ Votre espace <b>Prière Sacrée du Roi Salomon</b> vous attend dans notre nouvelle application.<br>Tout est prêt pour vous.
+</td></tr>
+<tr><td style="padding:22px 26px 0">
+ <div style="background:#fbf6ea;border:2px solid #dcc084;border-radius:12px;padding:16px;text-align:center">
+  <div style="font-size:17px;color:#5b4a22;font-family:Arial,sans-serif">Votre e-mail d'accès :</div>
+  <div style="font-size:22px;font-weight:bold;margin-top:6px;word-break:break-all;font-family:Arial,sans-serif;color:#1c2540"><a href="${h(link)}" style="color:#1c2540;text-decoration:none">${h(email)}</a></div>
+  <div style="font-size:15px;color:#6b6b6b;margin-top:6px;font-family:Arial,sans-serif">(l'adresse utilisée lors de votre achat)</div>
+ </div>
+</td></tr>
+<tr><td align="center" style="padding:26px 26px 6px">
+ <a href="${h(link)}" style="display:inline-block;background:#b98f3c;background-image:linear-gradient(90deg,#d9b866,#b98f3c);color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:21px;font-weight:bold;letter-spacing:1px;padding:20px 34px;border-radius:12px">OUVRIR MON ESPACE</a>
+</td></tr>
+<tr><td style="padding:16px 26px 0;font-size:19px;line-height:1.6">
+ En touchant le bouton, votre e-mail est <b>déjà rempli</b>. Il vous suffit de :
+ <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:10px;font-size:19px;line-height:1.5">
+  <tr><td valign="top" style="padding:6px 12px 6px 0;font-weight:bold;color:#8a6a1e">1.</td><td style="padding:6px 0">Écrire votre nom</td></tr>
+  <tr><td valign="top" style="padding:6px 12px 6px 0;font-weight:bold;color:#8a6a1e">2.</td><td style="padding:6px 0">Choisir un mot de passe (6 caractères minimum)<br><span style="font-size:16px;color:#6b6b6b">Conseil : notez-le sur un papier.</span></td></tr>
+  <tr><td valign="top" style="padding:6px 12px 6px 0;font-weight:bold;color:#8a6a1e">3.</td><td style="padding:6px 0">Toucher « Créer mon accès et entrer »</td></tr>
+ </table>
+ <p style="margin:16px 0 0">C'est tout ! La prochaine fois, l'application vous reconnaîtra.</p>
+</td></tr>
+<tr><td style="padding:22px 26px 0;font-size:17px;line-height:1.6;color:#3a3a3a">
+ <b>Besoin d'aide ?</b> Répondez simplement à cet e-mail : nous vous aidons avec plaisir.
+</td></tr>
+<tr><td style="padding:26px 26px 30px;font-size:19px;line-height:1.5;text-align:center;font-style:italic;color:#5b4a22">
+ Que la paix et la protection vous accompagnent,<br><span style="font-style:normal;font-weight:bold">L'équipe Prière Sacrée du Roi Salomon</span>
+</td></tr>
+</table>
+<p style="max-width:560px;font-family:Arial,sans-serif;font-size:13px;line-height:1.5;color:#7a7a7a;margin:16px auto 0;text-align:center">
+ Si le bouton ne fonctionne pas, copiez cette adresse dans votre navigateur :<br><a href="${h(link)}" style="color:#8a6a1e;word-break:break-all">${h(link)}</a><br><br>
+ Vous recevez cet e-mail car vous avez acheté Prière Sacrée du Roi Salomon avec l'adresse ${h(email)}.</p>
+</td></tr></table></body></html>`;
+  const text = `${p ? 'Bonjour ' + p + ',' : 'Bonjour,'}
+
+Votre espace Prière Sacrée du Roi Salomon vous attend dans notre nouvelle application.
+
+Votre e-mail d'accès : ${email}
+(l'adresse utilisée lors de votre achat)
+
+Ouvrez votre espace : ${link}
+
+Votre e-mail est déjà rempli. Il vous suffit de :
+1. Écrire votre nom
+2. Choisir un mot de passe (6 caractères minimum) — notez-le sur un papier
+3. Toucher « Créer mon accès et entrer »
+
+Besoin d'aide ? Répondez simplement à cet e-mail.
+
+Que la paix et la protection vous accompagnent,
+L'équipe Prière Sacrée du Roi Salomon`;
+  return { subject, html, text };
+}
+async function brevoSend(to, name, msg, tag) {
+  const c = cfg();
+  const r = await fetch(BREVO_URL, { method: 'POST', headers: { 'api-key': c.key, 'Content-Type': 'application/json', accept: 'application/json' },
+    body: JSON.stringify({ sender: { name: c.senderName, email: c.sender }, to: [{ email: to, ...(name ? { name: String(name).slice(0, 100) } : {}) }],
+      replyTo: { email: SUPPORT, name: c.senderName }, subject: msg.subject, htmlContent: msg.html, textContent: msg.text, tags: [tag] }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error((j.message || j.code || ('Brevo ' + r.status)).toString().slice(0, 300));
+  return j.messageId || null;
+}
+// E-mail « mot de passe oublié » : un bouton qui ouvre l'app sur « Nouveau mot de passe » (valable 1 heure)
+function resetEmail(email, name, token) {
+  const p = firstName(name), link = appLink('?reset=' + encodeURIComponent(token) + '&e=' + encodeURIComponent(email));
+  const subject = 'Votre nouveau mot de passe Prière Sacrée du Roi Salomon';
+  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${h(subject)}</title></head>
+<body style="margin:0;padding:0;background:#f4efe4;font-family:Georgia,'Times New Roman',serif;color:#1c2540">
+<div style="display:none;max-height:0;overflow:hidden">Touchez le bouton pour choisir un nouveau mot de passe.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe4"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;border:1px solid #e3d6b8">
+<tr><td style="padding:28px 26px 4px;text-align:center"><div style="font-size:15px;letter-spacing:3px;color:#8a6a1e;font-family:Arial,sans-serif;font-weight:bold">✦ PRIÈRE SACRÉE ✦</div>
+ <h1 style="margin:16px 0 0;font-size:28px;line-height:1.25;font-weight:normal">${p ? 'Bonjour ' + h(p) + ',' : 'Bonjour,'}</h1></td></tr>
+<tr><td style="padding:10px 28px 0;font-size:20px;line-height:1.6;text-align:center">Vous avez demandé à changer votre mot de passe.<br>Touchez le bouton ci-dessous pour en choisir un nouveau.</td></tr>
+<tr><td align="center" style="padding:26px 26px 4px"><a href="${h(link)}" style="display:inline-block;background:#b98f3c;background-image:linear-gradient(90deg,#d9b866,#b98f3c);color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:20px;font-weight:bold;letter-spacing:1px;padding:19px 30px;border-radius:12px">CHOISIR MON MOT DE PASSE</a></td></tr>
+<tr><td style="padding:16px 28px 0;text-align:center;font-family:Arial,sans-serif;font-size:16px;line-height:1.5;color:#5b5b5b">Ce lien fonctionne pendant <b>1 heure</b>, une seule fois.<br>Conseil : notez votre nouveau mot de passe sur un papier.</td></tr>
+<tr><td style="padding:18px 28px 0;text-align:center;font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#7a7a7a">Vous n'avez rien demandé ? Ignorez simplement cet e-mail : votre mot de passe actuel reste valable.</td></tr>
+<tr><td style="padding:22px 26px 28px;font-size:19px;text-align:center;font-style:italic;color:#5b4a22">L'équipe Prière Sacrée du Roi Salomon</td></tr></table>
+<p style="max-width:560px;font-family:Arial,sans-serif;font-size:13px;line-height:1.5;color:#7a7a7a;margin:16px auto 0;text-align:center">Si le bouton ne fonctionne pas : <a href="${h(link)}" style="color:#8a6a1e;word-break:break-all">${h(link)}</a></p>
+</td></tr></table></body></html>`;
+  const text = `${p ? 'Bonjour ' + p + ',' : 'Bonjour,'}\n\nVous avez demandé à changer votre mot de passe. Ouvrez ce lien pour en choisir un nouveau (valable 1 heure, une seule fois) :\n${link}\n\nVous n'avez rien demandé ? Ignorez cet e-mail.\n\nL'équipe Prière Sacrée du Roi Salomon`;
+  return { subject, html, text };
+}
+
+// E-mail avulso (réponse à un client) : texte simple mis en page comme les autres e-mails
+function customEmail(subject, text) {
+  const para = String(text).trim().split(/\n\s*\n/).map(b => {
+    const t = h(b).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" style="color:#8a6a1e;font-weight:bold">${u}</a>`);
+    return `<p style="margin:0 0 16px">${t}</p>`; }).join('');
+  const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${h(subject)}</title></head>
+<body style="margin:0;padding:0;background:#f4efe4;font-family:Georgia,'Times New Roman',serif;color:#1c2540">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe4"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;border:1px solid #e3d6b8">
+<tr><td style="padding:28px 26px 8px;text-align:center"><div style="font-size:15px;letter-spacing:3px;color:#8a6a1e;font-family:Arial,sans-serif;font-weight:bold">✦ PRIÈRE SACRÉE ✦</div></td></tr>
+<tr><td style="padding:14px 28px 14px;font-size:19px;line-height:1.6">${para}</td></tr></table></td></tr></table></body></html>`;
+  return { subject, html, text: String(text).trim() };
+}
+module.exports = { customEmail, appLink, cfg, accessEmail, resetEmail, brevoSend, APP_URL, firstName };
