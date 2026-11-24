@@ -23,8 +23,13 @@ Copie du code de `reiswqi/app` (novembre 2026) : même architecture (SPA un seul
 ## Identité visuelle
 Fond #120a1f (pourpre très sombre), cartes #2b1a42, or #dcc084, ciel étoilé violet. Polices Cormorant Garamond + Lato. Stockage local : `rs1`, `rs_q`, `rs_dev` (différents du 1er app).
 
+## Railway (même projet que le 1er app : b3535745-fd55-4e04-8d19-ee3ddc94b731, env production d6a17d8b-453e-42c8-b9ec-c48b2d6e297f ; jeton de projet injecté par le proxy)
+- Service **salomon** (a1d7ad23-69fe-4011-87e9-459db375e4bd), source `reiswqi/salomon-app` branche main, domaine https://salomon-production.up.railway.app (port 8080) ; variables : `DATABASE_URL=${{Postgres-Salomon.DATABASE_URL}}`, `PORT=8080`, `ACCESS_MODE=open` (passer à `buyers` quand les ventes commencent).
+- Service **Postgres-Salomon** (bd3149d0-a3d5-4768-9bca-c5e216f7faab), image postgres-ssl:18, volume postgres-salomon-volume, mot de passe généré par Railway (`secret(32)`). Base séparée du 1er app.
+- Un push sur main devrait redéployer ; sinon `serviceInstanceDeployV2(commitSha)`.
+
 ## À configurer (en attente de Lucas)
-- Dépôt GitHub (Lucas le crée), domaine (Lucas l'achète ; éviter .online, marqué « site dangereux » par Google pour le 1er app → préférer .com/.fr), service Railway + Postgres séparés, `API_URL` (src.html), `ADMIN_URL` (admin.html), `APP_URL`/`SUPPORT_EMAIL` (variables Railway ; défauts `DOMAINE-A-DEFINIR` dans server/mail.js), `ADMIN_PASSWORD` (Lucas), `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`, redirection e-mail contact@, `SUPPORT` dans src.html.
+- Dépôt GitHub (Lucas le crée), domaine (Lucas l'achète ; éviter .online, marqué « site dangereux » par Google pour le 1er app → préférer .com/.fr), `API_URL`/`ADMIN_URL` à changer pour le domaine définitif, `APP_URL`/`SUPPORT_EMAIL` (variables Railway ; défauts `DOMAINE-A-DEFINIR` dans server/mail.js), `ADMIN_PASSWORD` (Lucas), `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`, redirection e-mail contact@, `SUPPORT` dans src.html.
 
 ## Règles de travail
 - Garder `<meta charset="utf-8">` et le viewport ; `html,body{margin:0}` ; tester iPhone 13 (Playwright) avant de publier ; vérifier les accents.
