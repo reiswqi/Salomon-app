@@ -800,11 +800,7 @@ const SOON={t:"Les Proverbes de l'Abondance",s:'31 jours · Bientôt',img:'img/p
 // Vitrine : les deux premières offres non possédées sont mises en avant, les autres restent sous cadenas.
 // top: 1 place le produit en premier dans « Mes programmes » et ouvre directement sa page de vente externe (url).
 // Chaque produit ajouté ici apparaît dans Bonus : {id, t: nom, s: une ligne, img: couverture, url: page de vente ou paiement, p: [paragraphes de vente], pts: [ce que l'on reçoit]}.
-const OFFERS=[
- {id:'ange',top:1,t:"Découvrez votre ange gardien",s:"Recevez son message personnalisé.",img:'img/ange.jpg',url:'https://reiswqi.github.io/a/',
-  p:["Quelqu'un veille sur vous depuis toujours. Ce parcours de cinq minutes vous aide à mettre un nom sur cette présence.","Répondez à quelques questions simples, et recevez un message personnel à garder près de vous."],
-  pts:["Un parcours guidé de 5 minutes","Le nom de votre ange gardien","Son message personnalisé"]}
-];
+const OFFERS=[]; // offres externes (ex. ange gardien du 1er app) : à définir avec Lucas
 const REFUND_GIFT=null;
 // Produits verrouillés affichés sur l'Accueil. url: page de vente (à renseigner).
 const LOCKS=[
@@ -1143,7 +1139,7 @@ const DF=[
 S.df=S.df||{start:'',done:[],last:'',notes:{}};
 const dfDone=()=>S.df.done.length,dfNext=()=>Math.min(dfDone()+1,21);
 const dfAvail=n=>n<=dfDone()||(n===dfDone()+1&&n<=21&&S.df.start&&S.df.last!==TODAY);   // le suivant s'ouvre le lendemain
-function dfCover(big){return `<span class="cv d21${big?' big':''}"><span class="d21n">21</span><span class="d21l">jours</span><span class="d21s">de renouveau</span></span>`}
+function dfCover(big){return `<span class="cv d21${big?' big':''}"><span class="d21n">21</span><span class="d21l">jours</span><span class="d21s">de sagesse</span></span>`}
 function dfState(n){if(S.df.done.includes(n))return 'ok';if(dfAvail(n))return 'now';return 'lock'}
 function vDefi(){const d=dfDone(),n=dfNext(),started=!!S.df.start,end=d>=21;
  const lockTxt=n2=>n2===dfDone()+1&&S.df.last===TODAY?`S'ouvre dans ${pdLeft()}`:'Verrouillé';
@@ -1591,7 +1587,7 @@ function applyHash(){const h=location.hash.slice(1);if(!S.user||!h)return;
  if(pm||h==='message')V.day=false;
  if(pm){const p=P.find(x=>x.id===pm[1]);if(p&&has(p)&&!p.upd){openProg(p.id);const n=Math.min(+pm[2],p.l.length)-1;if(p.vt||p.tx){V.pop=n;V.cur=n;setTimeout(()=>$('#pl'+n)?.scrollIntoView({block:'start'}),300)}else V.cur=n}else if(p&&!has(p))openSA();track('lien_email',{h});history.replaceState(null,'',location.pathname);return}
  if(h==='message'){V.tab='home';track('lien_email',{h});history.replaceState(null,'',location.pathname);setTimeout(()=>{if(!pdDone()){$('#pdpop')?.remove();pdReveal();render()}},900);return}
- if(h==='saint-antoine')openSA();else{const t={priere:'pray',programmes:'lib',bonus:'shop',guide:'guide',nombres:'num',focus:'focus',remboursement:'refund',defi:'defi','21-jours':'defi'}[h];if(t)V.tab=t}}
+ if(h==='saint-antoine'||h==='grande-priere')openSA();else{const t={priere:'pray',programmes:'lib',bonus:'shop',guide:'guide',nombres:'num',focus:'focus',remboursement:'refund',defi:'defi','21-jours':'defi'}[h];if(t)V.tab=t}}
 
 const GUIDE_RULES=`Tu es l'assistant virtuel du ${PERE}, dans l'application Prière Sacrée du Roi Salomon (prières et leçons de spiritualité chrétienne inspirées de la sagesse du roi Salomon). Tu écris comme dans une messagerie : messages courts, chaleureux, simples, 60 mots maximum, sans titres ni listes.
 Tu es un assistant automatique : tu n'es ni un prêtre ni une personne. Ne prétends jamais être le ${PERE} lui-même ni un être humain, et si on te demande qui tu es, dis-le clairement. Tu ne donnes pas de sacrements, d'absolution ni de direction spirituelle personnelle.

@@ -800,11 +800,7 @@ const SOON={t:"Les Proverbes de l'Abondance",s:'31 jours · Bientôt',img:'img/p
 // Vitrine : les deux premières offres non possédées sont mises en avant, les autres restent sous cadenas.
 // top: 1 place le produit en premier dans « Mes programmes » et ouvre directement sa page de vente externe (url).
 // Chaque produit ajouté ici apparaît dans Bonus : {id, t: nom, s: une ligne, img: couverture, url: page de vente ou paiement, p: [paragraphes de vente], pts: [ce que l'on reçoit]}.
-const OFFERS=[
- {id:'ange',top:1,t:"Découvrez votre ange gardien",s:"Recevez son message personnalisé.",img:'img/ange.jpg',url:'https://reiswqi.github.io/a/',
-  p:["Quelqu'un veille sur vous depuis toujours. Ce parcours de cinq minutes vous aide à mettre un nom sur cette présence.","Répondez à quelques questions simples, et recevez un message personnel à garder près de vous."],
-  pts:["Un parcours guidé de 5 minutes","Le nom de votre ange gardien","Son message personnalisé"]}
-];
+const OFFERS=[]; // offres externes (ex. ange gardien du 1er app) : à définir avec Lucas
 const REFUND_GIFT=null;
 // Produits verrouillés affichés sur l'Accueil. url: page de vente (à renseigner).
 const LOCKS=[
@@ -1143,7 +1139,7 @@ const DF=[
 S.df=S.df||{start:'',done:[],last:'',notes:{}};
 const dfDone=()=>S.df.done.length,dfNext=()=>Math.min(dfDone()+1,21);
 const dfAvail=n=>n<=dfDone()||(n===dfDone()+1&&n<=21&&S.df.start&&S.df.last!==TODAY);   // le suivant s'ouvre le lendemain
-function dfCover(big){return `<span class="cv d21${big?' big':''}"><span class="d21n">21</span><span class="d21l">jours</span><span class="d21s">de renouveau</span></span>`}
+function dfCover(big){return `<span class="cv d21${big?' big':''}"><span class="d21n">21</span><span class="d21l">jours</span><span class="d21s">de sagesse</span></span>`}
 function dfState(n){if(S.df.done.includes(n))return 'ok';if(dfAvail(n))return 'now';return 'lock'}
 function vDefi(){const d=dfDone(),n=dfNext(),started=!!S.df.start,end=d>=21;
  const lockTxt=n2=>n2===dfDone()+1&&S.df.last===TODAY?`S'ouvre dans ${pdLeft()}`:'Verrouillé';
