@@ -94,6 +94,17 @@ const TYPE_RE = /^[a-z_]{2,40}$/;
 const KP_SECRET = process.env.KASHPAY_WEBHOOK_SECRET || '';
 const ACCESS_MODE = process.env.ACCESS_MODE === 'buyers' ? 'buyers' : 'open';
 const PAID_EV = new Set(['order.paid', 'subscription.created', 'subscription.renewed', 'manual.grant']);
+// KASHPAY_PRODUCT (facultatif) : mots du nom ou de l'id du produit/offre, séparés par des virgules (« !mot » = exclure). Si la même compte KashPay vend
+// plusieurs produits, chaque app ne garde que ses ventes (les remboursements/chargebacks d'une vente déjà enregistrée passent toujours).
+const KP_PRODUCT = String(process.env.KASHPAY_PRODUCT || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
+const kpProductText = d => JSON.stringify([d.offers, d.offer, d.product, d.products, d.items, d.order_items, d.plan, d.checkout]).toLowerCase();
+async function kpMine(ev) {
+  if (!KP_PRODUCT.length) return true;
+  const d = ev.data || {}, t = kpProductText(d), pos = KP_PRODUCT.filter(k => k[0] !== '!'), neg = KP_PRODUCT.filter(k => k[0] === '!').map(k => k.slice(1)).filter(Boolean);
+  if (!neg.some(k => t.includes(k)) && (!pos.length || pos.some(k => t.includes(k)))) return true;   // « salomon » = seulement ce produit ; « !salomon » = tout sauf lui
+  if (d.id) { const r = await pool.query('select 1 from purchases where kp_id=$1 limit 1', [String(d.id).slice(0, 100)]); if (r.rowCount) return true; }
+  return false;
+}
 let lastWebhook = null;
 function readRaw(req, max = 256 * 1024) {
   return new Promise((ok, ko) => { let size = 0, chunks = [];
@@ -120,7 +131,9 @@ async function kashpayWebhook(req, res) {
   const a = Buffer.from(sig), b = Buffer.from(exp);
   if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) { console.warn('Webhook KashPay : signature invalide depuis', ip); return send(res, 401, { error: 'signature invalide' }); }
   let ev; try { ev = JSON.parse(raw.toString('utf8')); } catch (e) { return send(res, 400, { error: 'JSON invalide' }); }
-  try { const fresh = await savePurchase(ev, ip); lastWebhook = { at: new Date().toISOString(), event: ev.event, fresh };
+  try { if (!(await kpMine(ev))) { console.log('Webhook KashPay', ev.event, (ev.data || {}).id, 'ignoré : autre produit');
+      lastWebhook = { at: new Date().toISOString(), event: ev.event, fresh: false, ignored: true }; return send(res, 200, { ok: true, ignored: 'autre produit' }); }
+    const fresh = await savePurchase(ev, ip); lastWebhook = { at: new Date().toISOString(), event: ev.event, fresh };
     console.log('Webhook KashPay', ev.event, (ev.data || {}).id, fresh ? 'enregistré' : 'déjà reçu'); }
   catch (e) { console.error('purchase', e.message); return send(res, 500, { error: 'base' }); }   // KashPay renverra
   send(res, 200, { received: true });
