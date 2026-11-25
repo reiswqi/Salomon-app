@@ -14,8 +14,13 @@ Copie exacte de `reiswqi/app` (src.html, prieres.json, images, vidéos, programm
 - Domaine définitif **app-cheminsalomon.com** (acheté par Lucas dans Railway le 25/11/2026, DNS Railway/name.com, certificat OK) : `API_URL`, `ADMIN_URL`, `SUPPORT`, `APP_URL` par défaut y pointent. L'admin : https://app-cheminsalomon.com/admin.
 - Un push sur main devrait redéployer ; sinon `serviceInstanceDeployV2(commitSha)`.
 
+## Fait le 25/11/2026
+- Redirection e-mail contact@app-cheminsalomon.com → Gmail de Lucas (Railway).
+- Webhook KashPay du produit Salomon → https://app-cheminsalomon.com/api/webhooks/kashpay, `KASHPAY_WEBHOOK_SECRET` posé par Lucas, événement de test `order.paid` reçu (signature valide). Un webhook par admin (Lucas) : `KASHPAY_PRODUCT` (filtre par produit, « !mot » = exclure) existe dans les deux serveurs mais reste **non défini**.
+- Brevo : même compte que le 1er app ; domaine app-cheminsalomon.com authentifié (brevo-code, DKIM brevo1/brevo2, DMARC, marque `mail`) ; variables `BREVO_API_KEY=${{app.BREVO_API_KEY}}` (référence, la clé n'est jamais copiée), `BREVO_SENDER=contact@app-cheminsalomon.com`, `BREVO_SENDER_NAME=Prière Sacrée du Roi Salomon`. Limite gratuite de 300/jour partagée entre les deux apps.
+
 ## À configurer (en attente de Lucas)
-- Redirection contact@app-cheminsalomon.com → Gmail : faite (25/11/2026). Restent : `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`.
+- `ACCESS_MODE=buyers` quand Lucas commence à vendre ; liste des acheteurs → « Liberar acesso » puis e-mails d'accès ; funnel (désactivé par défaut).
 
 ## Règles de travail
 - Garder `<meta charset="utf-8">` et le viewport ; `html,body{margin:0}` ; tester iPhone 13 (Playwright) avant de publier ; vérifier les accents.
