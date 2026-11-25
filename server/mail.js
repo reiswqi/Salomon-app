@@ -2,10 +2,10 @@
 // Variables Railway : BREVO_API_KEY (clé API Brevo), BREVO_SENDER (adresse d'envoi validée dans Brevo),
 //                     BREVO_SENDER_NAME (défaut « Prière Sacrée du Roi Salomon »), EMAIL_DAILY_LIMIT (défaut 290 : plan gratuit = 300/jour).
 const BREVO_URL = process.env.BREVO_URL || 'https://api.brevo.com/v3/smtp/email';
-const APP_URL = process.env.APP_URL || 'https://DOMAINE-A-DEFINIR';
+const APP_URL = process.env.APP_URL || 'https://app-cheminsalomon.com';
 // APP_URL peut être un domaine (https://x.fr) ou une page (https://reiswqi.github.io/app/temps-abondance.html)
 const appLink = q => APP_URL.replace(/\/$/, '') + (/\.html?$/.test(APP_URL) ? '' : '/') + q;
-const SUPPORT = process.env.SUPPORT_EMAIL || 'contact@DOMAINE-A-DEFINIR';   // « Répondre » des clients (redirigé vers le Gmail de Lucas)
+const SUPPORT = process.env.SUPPORT_EMAIL || 'contact@app-cheminsalomon.com';   // « Répondre » des clients (redirigé vers le Gmail de Lucas)
 const cfg = () => ({ key: process.env.BREVO_API_KEY || '', sender: process.env.BREVO_SENDER || '', senderName: process.env.BREVO_SENDER_NAME || 'Prière Sacrée du Roi Salomon',
   limit: Math.max(1, +process.env.EMAIL_DAILY_LIMIT || 290) });
 
