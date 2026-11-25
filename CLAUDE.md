@@ -17,7 +17,7 @@ Copie du code de `reiswqi/app` (novembre 2026) : même architecture (SPA un seul
 - Défi « 21 Jours de Sagesse » (👑 Demander la sagesse / 🏛️ Bâtir sa maison / 🌾 Récolter l'abondance), certificat avec Proverbes 4:18.
 - Assistant : `PERE='Frère Nathan'` (onglet « Frère Nathan », réponses de secours).
 - Thème du mois (Bonus) : vide (`THEME_PAGE`) tant que Lucas n'envoie pas de leçons.
-- `OFFERS`/`LOCKS` : encore les cross-sells Kiwify du 1er app (ange gardien, Prière Secrète, Code du Royaume) → **demander à Lucas** s'il les garde ou les change.
+- `OFFERS`/`LOCKS` : mêmes cross-sells Kiwify que le 1er app (ange gardien → reiswqi.github.io/a/, Prière Secrète, Code du Royaume) : Lucas les garde (25/11/2026).
 - Funnel : 15 e-mails réécrits pour les leçons de Salomon.
 
 ## Identité visuelle
@@ -30,7 +30,7 @@ Fond #120a1f (pourpre très sombre), cartes #2b1a42, or #dcc084, ciel étoilé v
 - Un push sur main devrait redéployer ; sinon `serviceInstanceDeployV2(commitSha)`.
 
 ## À configurer (en attente de Lucas)
-- Dépôt GitHub (Lucas le crée), redirection e-mail contact@app-cheminsalomon.com (Lucas, Railway → domaine → e-mail), `ADMIN_PASSWORD` (Lucas), `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`.
+- Dépôt GitHub (Lucas le crée), redirection e-mail contact@app-cheminsalomon.com (Lucas, Railway → domaine → e-mail), `BREVO_*` + DNS Brevo du nouveau domaine, `KASHPAY_WEBHOOK_SECRET` + webhook du nouveau produit, `ACCESS_MODE`.
 
 ## Règles de travail
 - Garder `<meta charset="utf-8">` et le viewport ; `html,body{margin:0}` ; tester iPhone 13 (Playwright) avant de publier ; vérifier les accents.
