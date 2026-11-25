@@ -107,7 +107,7 @@ async function api(path){const r=await fetch(API+'/api/admin/'+path,{headers:{Au
 function logout(){TOKEN=null;try{sessionStorage.removeItem('ta_admin')}catch(e){}draw()}
 
 /* ---------- nomes legíveis ---------- */
-const TABS={home:'Início',lib:'Programas',pray:'Oração do dia',defi:'Desafio 21 dias',defiday:'Desafio 21 dias (um dia)',deficert:'Certificado 21 dias',shop:'Bônus',guide:'Frère Nathan',refund:'Reembolso',theme:'Tema do mês',prog:'Programa (vídeos)',sa:'Oração de Santo Antônio',offer:'Página de oferta',script:'Script Divino',num:'Números Poderosos',focus:'Foco do Dia',journal:'Diário'};
+const TABS={home:'Início',lib:'Programas',pray:'Oração do dia',defi:'Desafio 21 dias',defiday:'Desafio 21 dias (um dia)',deficert:'Certificado 21 dias',shop:'Bônus',guide:'Père Michel',refund:'Reembolso',theme:'Tema do mês',prog:'Programa (vídeos)',sa:'Oração de Santo Antônio',offer:'Página de oferta',script:'Script Divino',num:'Números Poderosos',focus:'Foco do Dia',journal:'Diário'};
 const ACTS={open:'Abriu um programa',offer:'Abriu uma oferta',buy:'Clicou em COMPRAR',later:'Clicou em conteúdo “em breve”',soon:'Clicou em conteúdo “em breve”',lesson:'Escolheu uma lição',mark:'Marcou vídeo como concluído',play:'Play / pausa no vídeo do programa',mood:'Escolheu o humor do dia',savej:'Salvou o diário',logout:'Saiu da conta',reset:'Reiniciou a demonstração',ask:'Pergunta pronta ao Père Michel',rask:'Pergunta de ajuda',daygo:'Abriu o caminho do dia',sa:'Abriu a oração de Santo Antônio',sacard:'Abriu uma oração de Santo Antônio',sago:'Avançou na oração',salock:'Tentou abrir oração bloqueada',saread:'Concluiu a leitura da oração',bravoclose:'Fechou o “Bravo”',bravonext:'Continuou após “Bravo”',bravolib:'Foi para Programas após “Bravo”',unlockgo:'Abriu lições desbloqueadas',lockgo:'Clicou em conteúdo bloqueado (venda)',numopen:'Abriu Números Poderosos',ntab:'Trocou aba em Números',numclose:'Fechou Números',numgo:'Calculou seu número',numgift:'Recebeu o presente de Números',focusopen:'Abriu Foco do Dia',fopen:'Abriu escolha de intenção',fclose:'Fechou escolha de intenção',fset:'Definiu a intenção do dia',rnext:'Reembolso: passou para a confirmação',rprev:'Reembolso: voltou uma etapa',rsend:'Reembolso: clicou em CONFIRMAR',epgo:'Abriu uma aula do tema',pep:'Abriu/fechou uma aula de programa',pdopen:'Tocou no cartão da oração do dia',dfstart:'Desafio 21 dias: abriu o Dia 1',dfday:'Desafio 21 dias: abriu um dia',dflock:'Desafio 21 dias: tentou abrir um dia ainda bloqueado',dfok:'Desafio 21 dias: validou o dia',dfsave:'Desafio 21 dias: salvou a anotação',dfcert:'Desafio 21 dias: abriu o certificado',dfagain:'Desafio 21 dias: recomeçou',pdread:'Abriu a oração do dia completa',pdclose:'Fechou a oração do dia (mais tarde)',pdpopgo:'Aceitou o convite da oração do dia',pdpopno:'Adiou o convite da oração do dia',pgo:'Botão Começar/Continuar do programa',pmark:'Marcou aula do programa como concluída',menu:'Abriu o menu da conta'};
 const ICO={reset_request:'📨',reset_done:'🔑',defi:'🌅',pdreveal:'✨',pdpopup:'📜',purchase:'💳',access_denied:'🚫',grant_admin:'🛠️',logout_auto:'🚪',register:'🆕',login_ok:'🔐',login_fail:'⛔',password_set:'🔁',reset_admin:'🛠️',open:'📲',login:'🔑',view:'👁️',act:'👆',video:'🎬',priere:'🙏',lecon:'✅',cadeau:'🎁',chat:'💬',refund:'💸',away:'⏸️',back:'▶️',error:'⚠️'};
 // textes acceptés à la connexion, par version (CONSENT_V dans src.html)
@@ -145,7 +145,7 @@ function label(e){const d=e.detail||{};switch(e.type){
  case 'priere':return ['Leu a oração '+d.n+(d.titre?' — '+d.titre:''),d.nouvelle?'primeira leitura':'releitura'];
  case 'lecon':return ['Concluiu a lição '+d.n,'programa '+d.prog];
  case 'cadeau':return ['Desbloqueou um presente',d.type||''];
- case 'chat':return ['Mandou mensagem ao Frère Nathan',d.car+' caracteres'];
+ case 'chat':return ['Mandou mensagem ao Père Michel',d.car+' caracteres'];
  case 'refund':return ['PEDIU REEMBOLSO','motivo: '+(d.motif||'—')+(d.precisions?' · “'+d.precisions+'”':'')+(d.mail?' · e-mail informado: '+d.mail:'')];
  case 'away':return ['Saiu / minimizou o app','ficou '+dur(d.secs)+' ativo'];
  case 'back':return ['Voltou ao app',''];
@@ -189,7 +189,7 @@ function draw(){const app=$('#app');
  ${ST.tab==='sales'?salesTab():''}`;
  const q=$('#q');if(q){q.oninput=()=>{ST.q=q.value;const p=q.selectionStart;draw();const n=$('#q');n.focus();n.setSelectionRange(p,p)}}
  const f=$('#f');if(f)f.onchange=()=>{ST.f=f.value;draw()}}
-const GOTXT={'':'Entrada do app','message':'Oração do dia (selo)','grande-priere':'Grande Oração do Rei','saint-antoine':'Grande Oração do Rei','defi':'Desafio 21 dias','prog-sagesse-1':'Sabedoria · aula 1','prog-sagesse-3':'Sabedoria · aula 3','prog-prosp-1':'Prosperidade · segredo 1','prog-prosp-2':'Prosperidade · segredo 2','prog-prosp-5':'Prosperidade · segredo 5','prog-sceau-1':'Selo de proteção · 1','prog-sceau-3':'Selo de proteção · 3','prog-temple-1':'Orações do Templo · 1','prog-cantique-1':'Cântico · 1'};
+const GOTXT={'':'Entrada do app','message':'Oração do dia (selo)','saint-antoine':'Grande Oração do Rei Salomão','grande-priere':'Grande Oração do Rei Salomão','defi':'Desafio 21 dias','prog-fond-1':'Fondements · aula 1','prog-fond-2':'Fondements · aula 2','prog-fond-3':'Fondements · aula 3','prog-freq-1':'7 Fréquences · introdução','prog-freq-2':'7 Fréquences · L\'Éveil','prog-freq-5':'7 Fréquences · Jéricho','prog-chant-1':'Chant Sacré · Michel','prog-chant-2':'Chant Sacré · Anjo da guarda','prog-chant-3':'Chant Sacré · Raphaël'};
 const OFFN={'offer:ange':'Découvrez votre ange gardien','lock:0':'Prière Secrète - Illimitée (cadeado)','lock:1':'Code du Royaume (cadeado)','later':'Les 10 Promesses (em breve)','upd':'Roi Salomon (2 de dezembro)'};
 function offersPanel(){const o=ST.off;if(!o)return '';const A=o.rows.find(x=>x.k==='offer:ange')||{clicks:0,people:0,d1:0,d7:0};
  return `<div class="panel"><h3>Cliques nas ofertas</h3>
@@ -209,7 +209,7 @@ function funnelPanel(){const f=ST.fun;if(!f)return '';
   <p id="fres" class="muted" style="margin:8px 0 0"></p><div id="funbox"></div></div>`}
 function mailPanel(){const m=ST.mail;if(!m)return '';const n=Math.min(m.pending,m.remainingToday);
  return `<div class="panel"><h3>E-mail de acesso aos compradores (Brevo)</h3>
-  ${m.ready?`<p>Remetente: <b>${esc(m.senderName)} &lt;${esc(m.sender)}&gt;</b> · respostas dos clientes vão para o e-mail de suporte, que encaminha para o seu Gmail</p>`:'<p><span class="tag">falta configurar</span> Adicione no Railway (serviço app → Variables): <b>BREVO_API_KEY</b> e <b>BREVO_SENDER</b>.</p>'}
+  ${m.ready?`<p>Remetente: <b>${esc(m.senderName)} &lt;${esc(m.sender)}&gt;</b> · respostas dos clientes vão para contact@app-cheminsalomon.com, que encaminha para o seu Gmail</p>`:'<p><span class="tag">falta configurar</span> Adicione no Railway (serviço app → Variables): <b>BREVO_API_KEY</b> e <b>BREVO_SENDER</b>.</p>'}
   <div class="facts" style="margin:10px 0"><div><b>${m.pending}</b><span>compradores esperando o e-mail (liberados, sem conta)</span></div><div><b>${m.sent}</b><span>já receberam</span></div>
    <div><b>${m.sentToday} / ${m.limit}</b><span>enviados nas últimas 24 h (limite diário)</span></div><div><b style="color:${m.failed?'var(--bad)':'inherit'}">${m.failed}</b><span>falharam</span></div></div>
   ${m.lastErrors&&m.lastErrors.length?`<p class="err" style="font-size:12px">Últimas falhas: ${m.lastErrors.map(e=>esc(e.email+' — '+e.error)).join(' · ')}</p>`:''}
@@ -289,7 +289,7 @@ function drawClient(){const D=ST.detail,app=$('#app');
   <div class="panel"><h3>Uso do conteúdo</h3><div class="facts">
    <div><b>${vids.length?vids.join(', '):'—'}</b><span>aulas do tema assistidas (90 %+)</span></div><div><b>${plays}</b><span>aulas do tema iniciadas</span></div>
    <div><b>${prays.length?prays.join(', '):'—'}</b><span>orações de Santo Antônio lidas</span></div><div><b>${progs.length}</b><span>programas abertos</span></div>
-   <div><b>${lessons}</b><span>lições concluídas</span></div><div><b>${chats}</b><span>mensagens ao Frère Nathan</span></div></div>
+   <div><b>${lessons}</b><span>lições concluídas</span></div><div><b>${chats}</b><span>mensagens ao Père Michel</span></div></div>
    <p class="muted" style="margin:10px 0 0">Telas visitadas: ${esc(screens.join(', ')||'—')}</p></div>
  </div>
  ${ref.length?`<div class="panel"><h3 style="color:var(--bad)">Pedido de reembolso</h3>${ref.map(e=>`<p><b>${fmtDT(e.created_at)}</b> · motivo: <b>${esc(e.detail.motif)}</b>${e.detail.precisions?` · “${esc(e.detail.precisions)}”`:''} · e-mail informado: ${esc(e.detail.mail||'')} · IP ${esc(e.ip||'—')}</p>`).join('')}</div>`:''}

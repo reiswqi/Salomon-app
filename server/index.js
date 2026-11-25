@@ -1,4 +1,4 @@
-// Prière Sacrée du Roi Salomon : petit serveur (Railway) entre l'app et la base Postgres.
+// Temps d'Abondance : petit serveur (Railway) entre l'app et la base Postgres.
 //  POST /api/events        ← l'app envoie les actions des clients (écriture seule)
 //  GET  /admin             → panneau admin (admin.html)
 //  POST /api/admin/login   → mot de passe admin (variable ADMIN_PASSWORD) → jeton de 12 h
@@ -18,9 +18,9 @@ if (PASS.length < 8) console.error('⚠️ ADMIN_PASSWORD (8+ caractères) manqu
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5,
   ssl: process.env.PGSSL === '1' ? { rejectUnauthorized: false } : undefined });
 const ADMIN_HTML = path.join(__dirname, '..', 'admin.html');
-// ---------- l'app elle-même (domaine du service Salomon) : seulement la page, img/ et video/ ----------
+// ---------- l'app elle-même (domaine app-parcoursdefoi.online) : seulement la page, img/ et video/ ----------
 const ROOT = path.join(__dirname, '..');
-const APP_HTML = path.join(ROOT, 'index.html');
+const APP_HTML = path.join(ROOT, 'temps-abondance.html');
 const MIME = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.ico': 'image/x-icon' };
 function serveFile(req, res, file, cache) {
   fs.stat(file, (err, st) => {
